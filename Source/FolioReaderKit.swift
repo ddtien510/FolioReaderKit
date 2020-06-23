@@ -120,7 +120,7 @@ open class FolioReader: NSObject {
     var isReaderReady = false
     
     /// isPurchased
-    open var linkPurchase: String?
+    open var linkPurchase: String? = ""
 
     /// Check if layout needs to change to fit Right To Left
     var needsRTLChange: Bool {

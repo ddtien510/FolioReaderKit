@@ -117,31 +117,31 @@ class FolioReaderChapterList: UITableViewController {
         cell.contentView.backgroundColor = isSection ? UIColor(white: 0.7, alpha: 0.1) : UIColor.clear
         cell.backgroundColor = UIColor.clear
 
-        let a = self.folioReader.linkPurchase
-        if (a!.count > 0) {
+        let link = self.folioReader.linkPurchase
+        if (link!.count > 0) {
 
-        let button=UIButton.init(type: .system)
-        button.setTitle("Mua ngay", for: .normal)
-        button.setTitleColor(UIColor.white, for: .normal)
-        button.backgroundColor = UIColor(red: 1, green: 149/255, blue: 18/255, alpha: 1)
-                    // button.titleEdgeInsets = UIEdgeInsets(top: 10,left: 10,bottom: 10,right: 10)
-        button.layer.cornerRadius = 10
-        // button.frame.size = CGSize(width: 200, height: 50)
-        self.view.addSubview(button)
-        button.addTarget(self, action: #selector(showRemindPurchase), for: .touchUpInside)
-        //set constrains
-        button.translatesAutoresizingMaskIntoConstraints = false
-        if #available(iOS 11.0, *) {
-             button.rightAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
-             button.bottomAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
-            button.widthAnchor.constraint(equalToConstant: 130).isActive = true
-        } else {
-             button.rightAnchor.constraint(equalTo: tableView.layoutMarginsGuide.rightAnchor, constant: 0).isActive = true
-             button.bottomAnchor.constraint(equalTo: tableView.layoutMarginsGuide.bottomAnchor, constant: -10).isActive = true
-            button.widthAnchor.constraint(equalToConstant: 130).isActive = true
-             
+            let button=UIButton.init(type: .system)
+            button.setTitle("Mua ngay", for: .normal)
+            button.setTitleColor(UIColor.white, for: .normal)
+            button.backgroundColor = UIColor(red: 1, green: 149/255, blue: 18/255, alpha: 1)
+                        // button.titleEdgeInsets = UIEdgeInsets(top: 10,left: 10,bottom: 10,right: 10)
+            button.layer.cornerRadius = 10
+            // button.frame.size = CGSize(width: 200, height: 50)
+            self.view.addSubview(button)
+            button.addTarget(self, action: #selector(showRemindPurchase), for: .touchUpInside)
+            //set constrains
+            button.translatesAutoresizingMaskIntoConstraints = false
+            if #available(iOS 11.0, *) {
+                 button.rightAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
+                 button.bottomAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+                button.widthAnchor.constraint(equalToConstant: 130).isActive = true
+            } else {
+                 button.rightAnchor.constraint(equalTo: tableView.layoutMarginsGuide.rightAnchor, constant: 0).isActive = true
+                 button.bottomAnchor.constraint(equalTo: tableView.layoutMarginsGuide.bottomAnchor, constant: -10).isActive = true
+                button.widthAnchor.constraint(equalToConstant: 130).isActive = true
+                 
+            }
         }
-    }
         return cell
     }
     
