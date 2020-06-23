@@ -7,12 +7,14 @@
 //
 
 import UIKit
+import FolioReaderKit
 
 class FolioReaderPageIndicator: UIView {
     var pagesLabel: UILabel!
     var minutesLabel: UILabel!
     var totalMinutes: Int!
     var totalPages: Int!
+    var isShowPopup: Bool = false
     var currentPage: Int = 1 {
         didSet { self.reloadViewWithPage(self.currentPage) }
     }
@@ -46,6 +48,8 @@ class FolioReaderPageIndicator: UIView {
         minutesLabel.textAlignment = NSTextAlignment.right
         //        minutesLabel.alpha = 0
         addSubview(minutesLabel)
+
+
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -86,10 +90,51 @@ class FolioReaderPageIndicator: UIView {
         pagesLabel.textColor = self.folioReader.isNight(UIColor(white: 1, alpha: 0.6), UIColor(white: 0, alpha: 0.9))
     }
 
+    func showRemindPurchase() {
+        let link = self.folioReader.linkPurchase
+        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        var alert = UIAlertController(title: "",message:"Đã hết nội dung miễn phí, vui lòng mua sách tại trang web",
+                              preferredStyle: UIAlertController.Style.alert)
+            // dispatch_async(dispatch_get_main_queue(), {
+
+            //   self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+            // })
+
+            let alertActionOk = UIAlertAction(title: "Mua ngay", style: .default) { (act) in
+            if let url = URL(string: link!) {
+                if UIApplication.shared.canOpenURL(url) {
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(url, options: [:])
+                    } else {
+                        UIApplication.shared.openURL(url)
+                        // Fallback on earlier versions
+                    }
+                }
+            }
+            window?.rootViewController?.dismiss(animated: false, completion: nil)
+            }
+
+            let alertActionCancel = UIAlertAction(title: "Để sau", style: .cancel) { (act) in
+        
+        }
+        
+        //Thêm các action vào alert
+        alert.addAction(alertActionOk)
+        alert.addAction(alertActionCancel)
+        DispatchQueue.main.async {
+             window?.rootViewController?.presentedViewController?.present(alert, animated: true, completion: nil)
+        }
+    }
+
     fileprivate func reloadViewWithPage(_ page: Int) {
         let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page+1) : totalPages-page
-
+        print("pagesRemaining", pagesRemaining)
         if pagesRemaining == 1 {
+            let link = self.folioReader.linkPurchase
+            if (!self.isShowPopup && link!.count > 0) {
+                self.showRemindPurchase()
+                self.isShowPopup = true
+            }
             pagesLabel.text = " " + self.readerConfig.localizedReaderOnePageLeft
         } else {
             pagesLabel.text = " \(pagesRemaining) " + self.readerConfig.localizedReaderManyPagesLeft
@@ -117,3 +162,17 @@ extension FolioReaderPageIndicator: CAAnimationDelegate {
         }
     }
 }
+
+
+public extension UIAlertController {
+    func show() {
+        let win = UIWindow(frame: UIScreen.main.bounds)
+        let vc = UIViewController()
+        vc.view.backgroundColor = .clear
+        win.rootViewController = vc
+        win.windowLevel = UIWindow.Level.alert + 1  // Swift 3-4: UIWindowLevelAlert + 1
+        win.makeKeyAndVisible()    
+        vc.present(self, animated: true, completion: nil)
+    }
+}
+

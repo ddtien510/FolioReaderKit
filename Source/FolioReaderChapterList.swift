@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import FolioReaderKit
 /// Table Of Contents delegate
 @objc protocol FolioReaderChapterListDelegate: class {
     /**
@@ -28,6 +28,7 @@ class FolioReaderChapterList: UITableViewController {
     fileprivate var book: FRBook
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
+    fileprivate var centerViewController: FolioReaderCenter?
 
     init(folioReader: FolioReader, readerConfig: FolioReaderConfig, book: FRBook, delegate: FolioReaderChapterListDelegate?) {
         self.readerConfig = readerConfig
@@ -115,8 +116,65 @@ class FolioReaderChapterList: UITableViewController {
         cell.preservesSuperviewLayoutMargins = false
         cell.contentView.backgroundColor = isSection ? UIColor(white: 0.7, alpha: 0.1) : UIColor.clear
         cell.backgroundColor = UIColor.clear
+
+        let a = self.folioReader.linkPurchase
+        if (a!.count > 0) {
+
+        let button=UIButton.init(type: .system)
+        button.setTitle("Mua ngay", for: .normal)
+        button.setTitleColor(UIColor.white, for: .normal)
+        button.backgroundColor = UIColor(red: 1, green: 149/255, blue: 18/255, alpha: 1)
+                    // button.titleEdgeInsets = UIEdgeInsets(top: 10,left: 10,bottom: 10,right: 10)
+        button.layer.cornerRadius = 10
+        // button.frame.size = CGSize(width: 200, height: 50)
+        self.view.addSubview(button)
+        button.addTarget(self, action: #selector(showRemindPurchase), for: .touchUpInside)
+        //set constrains
+        button.translatesAutoresizingMaskIntoConstraints = false
+        if #available(iOS 11.0, *) {
+             button.rightAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.rightAnchor, constant: -10).isActive = true
+             button.bottomAnchor.constraint(equalTo: tableView.safeAreaLayoutGuide.bottomAnchor, constant: -10).isActive = true
+            button.widthAnchor.constraint(equalToConstant: 130).isActive = true
+        } else {
+             button.rightAnchor.constraint(equalTo: tableView.layoutMarginsGuide.rightAnchor, constant: 0).isActive = true
+             button.bottomAnchor.constraint(equalTo: tableView.layoutMarginsGuide.bottomAnchor, constant: -10).isActive = true
+            button.widthAnchor.constraint(equalToConstant: 130).isActive = true
+             
+        }
+    }
         return cell
     }
+    
+    @objc func showRemindPurchase(sender: UIButton!) {
+        let link = self.folioReader.linkPurchase
+        let alert = UIAlertController(title: "", message: "Đã hết nội dung miễn phí, vui lòng mua sách tại trang web", preferredStyle: .alert)
+        
+        //Khởi tạo các action (các nút) cho alert
+        let alertActionOk = UIAlertAction(title: "Mua ngay", style: .default) { (act) in
+            // self.view.window!.rootViewController?.dismiss(animated: false, completion: nil)
+            if let url = URL(string: link!) {
+                if UIApplication.shared.canOpenURL(url) {
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(url, options: [:])
+                    } else {
+                        UIApplication.shared.openURL(url)
+                        // Fallback on earlier versions
+                    }
+                }
+            }
+
+        }
+        let alertActionCancel = UIAlertAction(title: "Để sau", style: .cancel) { (act) in
+        }
+        
+        //Thêm các action vào alert
+        alert.addAction(alertActionOk)
+        alert.addAction(alertActionCancel)
+        
+        //Hiển thị alert
+        self.present(alert, animated: true, completion: nil)
+    }
+
 
     // MARK: - Table view delegate
 
