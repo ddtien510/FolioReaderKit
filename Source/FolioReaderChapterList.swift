@@ -123,7 +123,7 @@ class FolioReaderChapterList: UITableViewController {
             let button=UIButton.init(type: .system)
             button.setTitle("Mua ngay", for: .normal)
             button.setTitleColor(UIColor.white, for: .normal)
-            button.backgroundColor = UIColor(red: 1, green: 149/255, blue: 18/255, alpha: 1)
+            button.backgroundColor = UIColor(red: 1, green: 187/255, blue: 0/255, alpha: 1)
                         // button.titleEdgeInsets = UIEdgeInsets(top: 10,left: 10,bottom: 10,right: 10)
             button.layer.cornerRadius = 10
             // button.frame.size = CGSize(width: 200, height: 50)

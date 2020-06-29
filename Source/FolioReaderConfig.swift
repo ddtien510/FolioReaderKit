@@ -98,7 +98,7 @@ open class FolioReaderConfig: NSObject {
     // MARK: Colors
 
     /// Base header custom TintColor
-    open var tintColor = UIColor(rgba: "#fb9512")
+    open var tintColor = UIColor(rgba: "#e1bb00")
 
     /// Menu background color
     open var menuBackgroundColor = UIColor.white
@@ -110,7 +110,7 @@ open class FolioReaderConfig: NSObject {
     open var menuTextColor = UIColor(rgba: "#767676")
 
     /// Menu text color
-    open var menuTextColorSelected = UIColor(rgba: "#fb9512")
+    open var menuTextColorSelected = UIColor(rgba: "#e1bb00")
     
     // Day mode nav color
     open var daysModeNavBackground = UIColor.white
