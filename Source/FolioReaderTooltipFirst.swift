@@ -183,7 +183,7 @@ class FolioReaderTooltipFirst: UIViewController, SMSegmentViewDelegate, UIGestur
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { 
             self.folioReader.readerCenter?.presentTooltipSecond()
         }
-        if (self.readerConfig.shouldHideNavigationOnTap == false) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { 
             self.folioReader.readerCenter?.showBars()
         }
     }

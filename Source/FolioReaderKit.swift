@@ -172,7 +172,7 @@ extension FolioReader {
         self.readerContainer = readerContainer
         parentViewController.present(readerContainer, animated: animated, completion: nil)
         addObservers()
-        print("is purchase", chapInt)
+        print("is purchase", statusTooltip)
         self.linkPurchase = linkPurchase;
         self.chapInt = chapInt;
         self.statusTooltip = statusTooltip;

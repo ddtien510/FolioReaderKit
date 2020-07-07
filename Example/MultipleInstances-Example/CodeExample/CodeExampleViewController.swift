@@ -48,7 +48,6 @@ class CodeExampleViewController: UIViewController {
     }
 
     fileprivate func open(epub: Epub) {
-
         guard let bookPath = epub.bookPath else {
             return
         }
@@ -58,7 +57,7 @@ class CodeExampleViewController: UIViewController {
         case .bookOne:
             epubReaderOne.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false)
         case .bookTwo:
-            epubReaderTwo.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false)
+            epubReaderTwo.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false, shouldRemoveEpub: false, animated: true, linkPurchase: "https://sachvui.com", chapInt: 2, statusTooltip: true)
         }
     }
     

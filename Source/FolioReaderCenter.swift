@@ -196,11 +196,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let scrollScrubber = scrollScrubber {
             view.addSubview(scrollScrubber.slider)
         }
-        if (folioReader.statusTooltip!) { 
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { 
-              self.presentTooltipFirst()
-            }
-        }
+        
     }
 
     override open func viewWillAppear(_ animated: Bool) {
@@ -211,6 +207,12 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         // Update pages
         pagesForCurrentPage(currentPage)
         pageIndicatorView?.reloadView(updateShadow: true)
+        print("present tooltip", folioReader.linkPurchase!)
+        if (folioReader.statusTooltip!) { 
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { 
+              self.presentTooltipFirst()
+            }
+        }
     }
 
     override open func viewDidLayoutSubviews() {
