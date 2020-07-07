@@ -121,6 +121,8 @@ open class FolioReader: NSObject {
     
     /// isPurchased
     open var linkPurchase: String? = ""
+    open var statusTooltip: Bool? = false
+    open var chapInt: Int? = 0
 
     /// Check if layout needs to change to fit Right To Left
     var needsRTLChange: Bool {
@@ -164,14 +166,16 @@ extension FolioReader {
     ///   - shouldRemoveEpub: Boolean to remove the epub or not. Default true.
     ///   - animated: Pass true to animate the presentation; otherwise, pass false.
     open func presentReader(parentViewController: UIViewController, withEpubPath epubPath: String, unzipPath: String? = nil, andConfig config: FolioReaderConfig, shouldRemoveEpub: Bool = true, animated:
-        Bool = true, linkPurchase: String? = nil) {
+        Bool = true, linkPurchase: String? = nil, chapInt: Int? = nil, statusTooltip: Bool? = false) {
         print("present")
         let readerContainer = FolioReaderContainer(withConfig: config, folioReader: self, epubPath: epubPath, unzipPath: unzipPath, removeEpub: shouldRemoveEpub)
         self.readerContainer = readerContainer
         parentViewController.present(readerContainer, animated: animated, completion: nil)
         addObservers()
-        print("is purchase", linkPurchase)
+        print("is purchase", chapInt)
         self.linkPurchase = linkPurchase;
+        self.chapInt = chapInt;
+        self.statusTooltip = statusTooltip;
     }
 }
 
@@ -354,6 +358,8 @@ extension FolioReader {
             "pageOffsetX": webView.scrollView.contentOffset.x,
             "pageOffsetY": webView.scrollView.contentOffset.y
             ] as [String : Any]
+
+
 
         self.savedPositionForCurrentBook = position
     }

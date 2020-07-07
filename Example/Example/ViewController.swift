@@ -54,7 +54,6 @@ class ViewController: UIViewController {
         let customColor = UIColor(red:0.30, green:0.26, blue:0.20, alpha:1.0)
         let customQuote = QuoteImage(withColor: customColor, alpha: 1.0, textColor: textColor)
         config.quoteCustomBackgrounds.append(customQuote)
-
         return config
     }
 
@@ -64,7 +63,8 @@ class ViewController: UIViewController {
         }
 
         let readerConfiguration = self.readerConfiguration(forEpub: epub)
-        folioReader.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false, animated: true, linkPurchase: "https://sachvui.com")
+        print("config", readerConfiguration)
+        folioReader.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false, animated: true, linkPurchase: "https://sachvui.com", chapInt: 9, statusTooltip: true)
     }
 
     private func setCover(_ button: UIButton?, index: Int) {

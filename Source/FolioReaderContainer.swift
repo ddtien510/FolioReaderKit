@@ -55,6 +55,7 @@ open class FolioReaderContainer: UIViewController {
         if self.epubPath != "" {
             self.initialization()
         }
+        print("init")
     }
 
     required public init?(coder aDecoder: NSCoder) {

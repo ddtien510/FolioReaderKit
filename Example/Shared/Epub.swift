@@ -15,7 +15,7 @@ enum Epub: Int {
 
     var name: String {
         switch self {
-        case .bookOne:      return "The Silver Chair" // standard eBook
+        case .bookOne:      return "cach-tao-ra-nhung-san-pham-truong-ton1594087188" // standard eBook
         case .bookTwo:      return "The Adventures Of Sherlock Holmes - Adventure I" // audio-eBook
         }
     }
@@ -29,7 +29,7 @@ enum Epub: Int {
 
     var scrollDirection: FolioReaderScrollDirection {
         switch self {
-        case .bookOne:      return .vertical
+        case .bookOne:      return .horizontal
         case .bookTwo:      return .horizontal
         }
     }

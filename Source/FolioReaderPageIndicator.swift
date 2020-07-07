@@ -48,7 +48,7 @@ class FolioReaderPageIndicator: UIView {
         minutesLabel.textAlignment = NSTextAlignment.right
         //        minutesLabel.alpha = 0
         addSubview(minutesLabel)
-
+        // self.showRemindPurchase3()
 
     }
 
@@ -127,24 +127,32 @@ class FolioReaderPageIndicator: UIView {
     }
 
     fileprivate func reloadViewWithPage(_ page: Int) {
+        let chapter = self.folioReader.readerCenter?.getCurrentChapter()
+        let href = chapter?.href ?? ""
+        let index = self.folioReader.currentMenuIndex
+        print("index", index)
+
+
         let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page+1) : totalPages-page
         print("pagesRemaining", pagesRemaining)
         if pagesRemaining == 1 {
-            let link = self.folioReader.linkPurchase
-            if (!self.isShowPopup && link!.count > 0) {
-                self.showRemindPurchase()
-                self.isShowPopup = true
-            }
             pagesLabel.text = " " + self.readerConfig.localizedReaderOnePageLeft
         } else {
             pagesLabel.text = " \(pagesRemaining) " + self.readerConfig.localizedReaderManyPagesLeft
         }
 
         let minutesRemaining = Int(ceil(CGFloat((pagesRemaining * totalMinutes)/totalPages)))
+        print("minutesRemaining", minutesRemaining)
+        
         if minutesRemaining > 1 {
             minutesLabel.text = "\(minutesRemaining) " + self.readerConfig.localizedReaderManyMinutes+" ·"
         } else if minutesRemaining == 1 {
             minutesLabel.text = self.readerConfig.localizedReaderOneMinute+" ·"
+            let link = self.folioReader.linkPurchase
+            if (!self.isShowPopup && link!.count > 0) {
+                self.showRemindPurchase()
+                self.isShowPopup = true
+            }
         } else {
             minutesLabel.text = self.readerConfig.localizedReaderLessThanOneMinute+" ·"
         }

@@ -196,6 +196,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let scrollScrubber = scrollScrubber {
             view.addSubview(scrollScrubber.slider)
         }
+        if (folioReader.statusTooltip!) { 
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { 
+              self.presentTooltipFirst()
+            }
+        }
     }
 
     override open func viewWillAppear(_ animated: Bool) {
@@ -302,9 +307,13 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         self.setCollectionViewProgressiveDirection()
 
         if self.readerConfig.loadSavedPositionForCurrentBook {
-            guard let position = folioReader.savedPositionForCurrentBook, let pageNumber = position["pageNumber"] as? Int, pageNumber > 0 else {
+            guard let position = folioReader.savedPositionForCurrentBook, var pageNumber = position["pageNumber"] as? Int, pageNumber > 0 else {
                 self.currentPageNumber = 1
                 return
+            }
+
+            if (folioReader.chapInt > 0) {
+                pageNumber = folioReader.chapInt!
             }
 
             self.changePageWith(page: pageNumber)
@@ -1373,6 +1382,45 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         hideBars()
 
         let menu = FolioReaderPlayerMenu(folioReader: folioReader, readerConfig: readerConfig)
+        menu.modalPresentationStyle = .custom
+
+        animator = ZFModalTransitionAnimator(modalViewController: menu)
+        animator.isDragable = true
+        animator.bounces = false
+        animator.behindViewAlpha = 0.4
+        animator.behindViewScale = 1
+        animator.transitionDuration = 0.6
+        animator.direction = ZFModalTransitonDirection.bottom
+
+        menu.transitioningDelegate = animator
+        present(menu, animated: true, completion: nil)
+    }
+
+    @objc func presentTooltipFirst() {
+        print("here")
+        folioReader.saveReaderState()
+        hideBars()
+
+        let menu = FolioReaderTooltipFirst(folioReader: folioReader, readerConfig: readerConfig)
+        menu.modalPresentationStyle = .custom
+
+        animator = ZFModalTransitionAnimator(modalViewController: menu)
+        animator.isDragable = true
+        animator.bounces = false
+        animator.behindViewAlpha = 0.4
+        animator.behindViewScale = 1
+        animator.transitionDuration = 0.6
+        animator.direction = ZFModalTransitonDirection.bottom
+
+        menu.transitioningDelegate = animator
+        present(menu, animated: true, completion: nil)
+    }
+
+    @objc func presentTooltipSecond() {
+        folioReader.saveReaderState()
+        hideBars()
+
+        let menu = FolioReaderTooltipSecond(folioReader: folioReader, readerConfig: readerConfig)
         menu.modalPresentationStyle = .custom
 
         animator = ZFModalTransitionAnimator(modalViewController: menu)
