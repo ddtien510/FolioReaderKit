@@ -55,7 +55,7 @@ class CodeExampleViewController: UIViewController {
         let readerConfiguration = self.readerConfiguration(forEpub: epub)
         switch epub {
         case .bookOne:
-            epubReaderOne.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false)
+            epubReaderOne.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false, shouldRemoveEpub: false, animated: true, linkPurchase: "https://sachvui.com", chapInt: 1, statusTooltip: true)
         case .bookTwo:
             epubReaderTwo.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false, shouldRemoveEpub: false, animated: true, linkPurchase: "https://sachvui.com", chapInt: 2, statusTooltip: true)
         }

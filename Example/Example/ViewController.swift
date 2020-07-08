@@ -64,7 +64,7 @@ class ViewController: UIViewController {
 
         let readerConfiguration = self.readerConfiguration(forEpub: epub)
         print("config", readerConfiguration)
-        folioReader.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false, animated: true, linkPurchase: "https://sachvui.com", chapInt: 4, statusTooltip: true)
+        folioReader.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false, animated: true, linkPurchase: "https://sachvui.com", chapInt: 10, statusTooltip: false)
     }
 
     private func setCover(_ button: UIButton?, index: Int) {
