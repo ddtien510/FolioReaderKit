@@ -70,8 +70,12 @@ class FolioReaderTooltipSecond: UIViewController, SMSegmentViewDelegate, UIGestu
         let prev = UIImage(readerImageNamed: "prev-icon")
         let next = UIImage(readerImageNamed: "tooltip2")
 
+           var imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 150, y: 50, width: 220, height: 140)); // set as you want
+           print("width", view.frame.width )
+        if (view.frame.width > 380) {
+           imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 130, y: 65, width: 220, height: 140)); // set as you want
+        }
 
-        var imageView = UIImageView(frame: CGRect(x: 80, y: 70, width: 220, height: 140)); // set as you want
         var image = UIImage(readerImageNamed: "tooltip2")
         imageView.image = image;
 
@@ -100,8 +104,6 @@ class FolioReaderTooltipSecond: UIViewController, SMSegmentViewDelegate, UIGestu
         nextBtn.setImage(next, for: .selected)
         nextBtn.addTarget(self, action: #selector(FolioReaderTooltipSecond.nextChapter(_:)), for: .touchUpInside)
         menuView.addSubview(imageView)
-
-
     }
 
 
@@ -194,7 +196,6 @@ class FolioReaderTooltipSecond: UIViewController, SMSegmentViewDelegate, UIGestu
     
     
     func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
-        print("232323")
         closeView()
         if gestureRecognizer is UITapGestureRecognizer && touch.view == view {
             return true

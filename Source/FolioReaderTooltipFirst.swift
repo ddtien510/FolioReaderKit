@@ -65,14 +65,14 @@ class FolioReaderTooltipFirst: UIViewController, SMSegmentViewDelegate, UIGestur
         //let btnX = (Int(view.frame.width) - (size * 3)) / 4
 
         // get icon images
-        let play = UIImage(readerImageNamed: "tooltip1")
+        let play = UIImage(readerImageNamed: "tooltip3")
         let pause = UIImage(readerImageNamed: "pause-icon")
         let prev = UIImage(readerImageNamed: "prev-icon")
-        let next = UIImage(readerImageNamed: "tooltip1")
+        let next = UIImage(readerImageNamed: "tooltip3")
 
 
-        var imageView = UIImageView(frame: CGRect(x: 100, y: view.frame.height/2 - 45, width: 200, height: 90)); // set as you want
-        var image = UIImage(readerImageNamed: "tooltip1")
+        var imageView = UIImageView(frame: CGRect(x: view.frame.width/2 - 100, y: view.frame.height/2 - 45, width: 200, height: 90)); // set as you want
+        var image = UIImage(readerImageNamed: "tooltip3")
         imageView.image = image;
 
 
