@@ -64,6 +64,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var scrollScrubber: ScrollScrubber?
     var activityIndicator = UIActivityIndicatorView()
     var isScrolling = false
+    var isShowTooltip = false
     var pageScrollDirection = ScrollDirection()
     var nextPageNumber: Int = 0
     var previousPageNumber: Int = 0
@@ -203,12 +204,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         super.viewWillAppear(animated)
 
         configureNavBar()
-
         // Update pages
         pagesForCurrentPage(currentPage)
         pageIndicatorView?.reloadView(updateShadow: true)
-        print("present tooltip", folioReader.linkPurchase!)
-        if (folioReader.statusTooltip!) { 
+        if (folioReader.statusTooltip! && !self.isShowTooltip) { 
+            self.isShowTooltip = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { 
               self.presentTooltipFirst()
             }

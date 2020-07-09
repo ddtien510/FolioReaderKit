@@ -70,8 +70,7 @@ class FolioReaderTooltipSecond: UIViewController, SMSegmentViewDelegate, UIGestu
         let prev = UIImage(readerImageNamed: "prev-icon")
         let next = UIImage(readerImageNamed: "tooltip2")
 
-           var imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 150, y: 50, width: 220, height: 140)); // set as you want
-           print("width", view.frame.width )
+        var imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 150, y: 55, width: 220, height: 140)); // set as you want
         if (view.frame.width > 380) {
            imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 130, y: 65, width: 220, height: 140)); // set as you want
         }
