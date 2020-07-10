@@ -30,7 +30,7 @@ class CodeExampleViewController: UIViewController {
 
         let config = FolioReaderConfig(withIdentifier: epub.readerIdentifier)
         config.shouldHideNavigationOnTap = epub.shouldHideNavigationOnTap
-        config.scrollDirection = epub.scrollDirection
+        config.scrollDirection = .horizontal
 
         // Custom sharing quote background
         config.quoteCustomBackgrounds = []

@@ -34,6 +34,11 @@ class FolioReaderTooltipSecond: UIViewController, SMSegmentViewDelegate, UIGestu
 
         // Do any additional setup after loading the view.
         self.view.backgroundColor = UIColor(red: (0/255.0), green: (0/255.0), blue: (0/255.0), alpha: 0.2)
+       
+        var fixPositionVersion = 55
+        if #available(iOS 13.0, *) { // check for iOS 9.0 and later
+         fixPositionVersion = 65
+        }
 
         // Tap gesture
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FolioReaderTooltipSecond.tapGesture))

@@ -28,7 +28,7 @@ class ViewController: UIViewController {
     private func readerConfiguration(forEpub epub: Epub) -> FolioReaderConfig {
         let config = FolioReaderConfig(withIdentifier: epub.readerIdentifier)
         config.shouldHideNavigationOnTap = epub.shouldHideNavigationOnTap
-        config.scrollDirection = epub.scrollDirection
+        // config.scrollDirection = epub.scrollDirection
 
         // See more at FolioReaderConfig.swift
 //        config.canChangeScrollDirection = false
@@ -63,7 +63,6 @@ class ViewController: UIViewController {
         }
 
         let readerConfiguration = self.readerConfiguration(forEpub: epub)
-        print("config", readerConfiguration)
         folioReader.setParams(linkPurchase: "https://sachvui.com", chapInt: 5, statusTooltip: true)
         folioReader.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false, animated: true)
     }

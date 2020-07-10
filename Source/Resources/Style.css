@@ -215,12 +215,12 @@ html.nightMode, html.nightMode body {
 }
 
 .nightMode p, .nightMode div, .nightMode span:not(.epub-media-overlay-playing) {
-    color: #767676 !important;
+    color: #f2f2f2 !important;
     background-color: transparent !important;
 }
 
 .nightMode h1, .nightMode h2, .nightMode h3, .nightMode h4, .nightMode h5, .nightMode h6 {
-    color: #848484 !important;
+    color: #f2f2f2 !important;
 }
 
 html.nightMode .highlight-yellow {background:rgba(255, 235, 107, 0.9)}

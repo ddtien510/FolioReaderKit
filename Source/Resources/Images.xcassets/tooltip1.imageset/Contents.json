@@ -2,12 +2,12 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "tooltip1.png",
+      "filename" : "tooltip1-min.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "tooltip1-1.png",
+      "filename" : "tooltip1-min-1.png",
       "scale" : "2x"
     },
     {

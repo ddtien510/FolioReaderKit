@@ -283,7 +283,7 @@ extension FolioReader {
     open var currentScrollDirection: Int {
         get {
             guard let value = self.defaults.value(forKey: kCurrentScrollDirection) as? Int else {
-                return FolioReaderScrollDirection.defaultVertical.rawValue
+                return FolioReaderScrollDirection.horizontal.rawValue
             }
 
             return value
@@ -291,7 +291,7 @@ extension FolioReader {
         set (value) {
             self.defaults.set(value, forKey: kCurrentScrollDirection)
 
-            let direction = (FolioReaderScrollDirection(rawValue: currentScrollDirection) ?? .defaultVertical)
+            let direction = (FolioReaderScrollDirection(rawValue: currentScrollDirection) ?? .horizontal)
             self.readerCenter?.setScrollDirection(direction)
         }
     }
@@ -376,5 +376,9 @@ extension FolioReader {
         self.readerAudioPlayer?.stop(immediate: true)
         self.defaults.set(0, forKey: kCurrentTOCMenu)
         self.delegate?.folioReaderDidClose?(self)
+    }
+
+    open func closeEpubApp() {
+        readerCenter?.closeEpubApp()
     }
 }

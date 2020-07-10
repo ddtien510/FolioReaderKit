@@ -89,7 +89,7 @@ open class FolioReaderContainer: UIViewController {
             kCurrentHighlightStyle: 0,
             kCurrentTOCMenu: 0,
             kCurrentMediaOverlayStyle: MediaOverlayStyle.default.rawValue,
-            kCurrentScrollDirection: FolioReaderScrollDirection.defaultVertical.rawValue
+            kCurrentScrollDirection: FolioReaderScrollDirection.horizontal.rawValue
             ])
     }
 

@@ -31,7 +31,6 @@ class FolioReaderTooltipFirst: UIViewController, SMSegmentViewDelegate, UIGestur
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
         // Do any additional setup after loading the view.
         self.view.backgroundColor = UIColor(red: (0/255.0), green: (0/255.0), blue: (0/255.0), alpha: 0.2)
 
