@@ -147,7 +147,7 @@ class FolioReaderChapterList: UITableViewController {
     
     @objc func showRemindPurchase(sender: UIButton!) {
         let link = self.folioReader.linkPurchase
-        let alert = UIAlertController(title: "", message: "Đã hết nội dung miễn phí, vui lòng mua sách tại trang web", preferredStyle: .alert)
+        let alert = UIAlertController(title: "", message: "Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!", preferredStyle: .alert)
         
         //Khởi tạo các action (các nút) cho alert
         let alertActionOk = UIAlertAction(title: "Mua ngay", style: .default) { (act) in

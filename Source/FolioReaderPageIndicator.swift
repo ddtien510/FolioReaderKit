@@ -93,7 +93,7 @@ class FolioReaderPageIndicator: UIView {
     func showRemindPurchase() {
         let link = self.folioReader.linkPurchase
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-        var alert = UIAlertController(title: "",message:"Đã hết nội dung miễn phí, vui lòng mua sách tại trang web",
+        var alert = UIAlertController(title: "",message:"Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!",
                               preferredStyle: UIAlertController.Style.alert)
             // dispatch_async(dispatch_get_main_queue(), {
 

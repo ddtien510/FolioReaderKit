@@ -403,10 +403,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: Status bar and Navigation bar
 
     func hideBars() {
+        
         guard self.readerConfig.shouldHideNavigationOnTap == true else {
             return
         }
-        print("hidde")
         self.updateBarsStatus(true)
     }
 
@@ -1546,7 +1546,9 @@ extension FolioReaderCenter: FolioReaderChapterListDelegate {
             })
             tempReference = reference
         }
-        self.hideBars()
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.6) { 
+            self.hideBars()
+        }
     }
     
     func chapterList(didDismissedChapterList chapterList: FolioReaderChapterList) {

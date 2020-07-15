@@ -22,7 +22,7 @@ enum Epub: Int {
 
     var shouldHideNavigationOnTap: Bool {
         switch self {
-        case .bookOne:      return false
+        case .bookOne:      return true
         case .bookTwo:      return true
         }
     }
