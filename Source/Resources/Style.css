@@ -240,7 +240,7 @@ html.nightMode .highlight-underline {border-bottom: 2px solid rgba(240, 40, 20, 
 /*.lato, .lato p, .lato span, .lato div { font-family: "Lato", serif !important; }*/
 /*.lora, .lora p, .lora span, .lora div { font-family: "Lora", serif !important; }*/
 /*.raleway, .raleway p, .raleway span, .raleway div { font-family: "Raleway", sans-serif !important; }*/
-.time, .time p, .time span, .time div { font-family: "Times New Roman", sans-serif !important; }
+.time, .time p, .time span, .time div { font-family: "Lora", sans-serif !important; }
 .iowan, .iowan p, .iowan span, .iowan div { font-family: "IowanOldSt BT", sans-serif !important; }
 .roboto, .roboto p, .roboto span, .roboto div { font-family: "Roboto", sans-serif !important; }
 

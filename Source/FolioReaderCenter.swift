@@ -308,15 +308,21 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         self.configureNavBarButtons()
         self.setCollectionViewProgressiveDirection()
 
+        if (folioReader.chapInt > -1) {
+                self.changePageWith(page: folioReader.chapInt!)
+            self.currentPageNumber = folioReader.chapInt!
+            return
+        }
+
+
         if self.readerConfig.loadSavedPositionForCurrentBook {
             guard let position = folioReader.savedPositionForCurrentBook, var pageNumber = position["pageNumber"] as? Int, pageNumber > 0 else {
                 self.currentPageNumber = 1
                 return
             }
 
-            if (folioReader.chapInt > 0) {
-                pageNumber = folioReader.chapInt!
-            }
+            
+            // print("====>", folioReader.chapInt!)
 
             self.changePageWith(page: pageNumber)
             self.currentPageNumber = pageNumber
@@ -400,7 +406,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         guard self.readerConfig.shouldHideNavigationOnTap == true else {
             return
         }
-
+        print("hidde")
         self.updateBarsStatus(true)
     }
 
@@ -1372,7 +1378,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         animator = ZFModalTransitionAnimator(modalViewController: menu)
         animator.isDragable = false
         animator.bounces = false
-        animator.behindViewAlpha = 0.4
+        // animator.behindViewAlpha = 0.4
         animator.behindViewScale = 1
         animator.transitionDuration = 0.6
         animator.direction = ZFModalTransitonDirection.bottom
@@ -1526,7 +1532,6 @@ extension FolioReaderCenter: FolioReaderChapterListDelegate {
     
     func chapterList(_ chapterList: FolioReaderChapterList, didSelectRowAtIndexPath indexPath: IndexPath, withTocReference reference: FRTocReference) {
         let item = findPageByResource(reference)
-        
         if item < totalPages {
             let indexPath = IndexPath(row: item, section: 0)
             changePageWith(indexPath: indexPath, animated: false, completion: { () -> Void in
@@ -1535,7 +1540,13 @@ extension FolioReaderCenter: FolioReaderChapterListDelegate {
             tempReference = reference
         } else {
             print("Failed to load book because the requested resource is missing.")
+            let indexPath = IndexPath(row: 0, section: 0)
+            changePageWith(indexPath: indexPath, animated: false, completion: { () -> Void in
+                self.updateCurrentPage()
+            })
+            tempReference = reference
         }
+        self.hideBars()
     }
     
     func chapterList(didDismissedChapterList chapterList: FolioReaderChapterList) {

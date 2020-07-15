@@ -39,6 +39,8 @@
 		751F8CF71ECD20110050A2CF /* Epub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751F8CF51ECD20110050A2CF /* Epub.swift */; };
 		751F8CF81ECD20110050A2CF /* Epub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751F8CF51ECD20110050A2CF /* Epub.swift */; };
 		B299C71A24B41F1300C87445 /* cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub in Resources */ = {isa = PBXBuildFile; fileRef = B299C71924B41F1300C87445 /* cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub */; };
+		B2B3819924BD8C67001EEB8E /* digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub in Resources */ = {isa = PBXBuildFile; fileRef = B2B3819824BD8C67001EEB8E /* digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub */; };
+		B2B3819B24BD9195001EEB8E /* 90-ngay-dau-tien-lam-sep1594605101.epub in Resources */ = {isa = PBXBuildFile; fileRef = B2B3819A24BD9195001EEB8E /* 90-ngay-dau-tien-lam-sep1594605101.epub */; };
 		B2C3ED0324B557F400AC147D /* thay-doi-1-cach-lanh-dao-09031593159744.epub in Resources */ = {isa = PBXBuildFile; fileRef = B2C3ED0224B557F400AC147D /* thay-doi-1-cach-lanh-dao-09031593159744.epub */; };
 		C143E5BE0CD376A99AD08747 /* Pods_Storyboard_Example.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 44C24A346E8730FB52DC197B /* Pods_Storyboard_Example.framework */; };
 		CA10C1341C572A4B0049165D /* FolioReaderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = CA10C1331C572A4B0049165D /* FolioReaderTests.swift */; };
@@ -95,6 +97,8 @@
 		843E2EEC2F784021400961A9 /* Pods_MultipleInstance_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MultipleInstance_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E1BE6465444C567F5D1B8E6 /* Pods-FolioReaderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FolioReaderTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FolioReaderTests/Pods-FolioReaderTests.release.xcconfig"; sourceTree = "<group>"; };
 		B299C71924B41F1300C87445 /* cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub"; sourceTree = "<group>"; };
+		B2B3819824BD8C67001EEB8E /* digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub */ = {isa = PBXFileReference; lastKnownFileType = file; name = "digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub"; path = "../../../../../../../../Desktop/epub/digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub"; sourceTree = "<group>"; };
+		B2B3819A24BD9195001EEB8E /* 90-ngay-dau-tien-lam-sep1594605101.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "90-ngay-dau-tien-lam-sep1594605101.epub"; sourceTree = "<group>"; };
 		B2C3ED0224B557F400AC147D /* thay-doi-1-cach-lanh-dao-09031593159744.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "thay-doi-1-cach-lanh-dao-09031593159744.epub"; sourceTree = "<group>"; };
 		C4F8C36D75B15390CDB07BF1 /* Pods-MultipleInstance-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MultipleInstance-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-MultipleInstance-Example/Pods-MultipleInstance-Example.release.xcconfig"; sourceTree = "<group>"; };
 		C860A0C690322C01443DBA0C /* Pods-Storyboard-Example.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Storyboard-Example.release.xcconfig"; path = "Pods/Target Support Files/Pods-Storyboard-Example/Pods-Storyboard-Example.release.xcconfig"; sourceTree = "<group>"; };
@@ -242,6 +246,8 @@
 				B2C3ED0224B557F400AC147D /* thay-doi-1-cach-lanh-dao-09031593159744.epub */,
 				B299C71924B41F1300C87445 /* cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub */,
 				3AAA8B9E1E9BB94B00A47E5A /* The Adventures Of Sherlock Holmes - Adventure I.epub */,
+				B2B3819824BD8C67001EEB8E /* digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub */,
+				B2B3819A24BD9195001EEB8E /* 90-ngay-dau-tien-lam-sep1594605101.epub */,
 				3AAA8B9F1E9BB94B00A47E5A /* The Silver Chair.epub */,
 			);
 			path = "Sample eBooks";
@@ -439,6 +445,8 @@
 				3AAA8BA31E9BB94B00A47E5A /* The Adventures Of Sherlock Holmes - Adventure I.epub in Resources */,
 				B299C71A24B41F1300C87445 /* cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub in Resources */,
 				B2C3ED0324B557F400AC147D /* thay-doi-1-cach-lanh-dao-09031593159744.epub in Resources */,
+				B2B3819924BD8C67001EEB8E /* digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub in Resources */,
+				B2B3819B24BD9195001EEB8E /* 90-ngay-dau-tien-lam-sep1594605101.epub in Resources */,
 				3AAA8BA61E9BB94B00A47E5A /* The Silver Chair.epub in Resources */,
 				3AAA8BA01E9BB94B00A47E5A /* Assets.xcassets in Resources */,
 				1A42C2921C0E3883000F2137 /* Main.storyboard in Resources */,

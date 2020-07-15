@@ -11,9 +11,9 @@ import UIKit
 public enum FolioReaderFont: Int {
     case andada = 0
     // case lato
-    // case lora
+    case lora
     // case raleway
-    case time
+    // case time
     case iowan
     case roboto
 
@@ -22,9 +22,9 @@ public enum FolioReaderFont: Int {
         switch fontName {
         case "andada": font = .andada
         // case "lato": font = .lato
-        // case "lora": font = .lora
+        case "lora": font = .lora
         // case "raleway": font = .raleway
-        case "time": font = .time
+        // case "time": font = .time
         case "iowan": font = .iowan
         case "roboto": font = .roboto
         default: break
@@ -35,9 +35,9 @@ public enum FolioReaderFont: Int {
         switch self {
         case .andada: return "andada"
         // case .lato: return "lato"
-        // case .lora: return "lora"
+        case .lora: return "lora"
         // case .raleway: return "raleway"
-        case .time: return "time"
+        // case .time: return "time"
         case .iowan: return "iowan"
         case .roboto: return "roboto"
 
@@ -176,9 +176,9 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
 
         fontName.addSegmentWithTitle("Andada", onSelectionImage: nil, offSelectionImage: nil)
         // fontName.addSegmentWithTitle("Lato", onSelectionImage: nil, offSelectionImage: nil)
-        // fontName.addSegmentWithTitle("Lora", onSelectionImage: nil, offSelectionImage: nil)
+        fontName.addSegmentWithTitle("Lora", onSelectionImage: nil, offSelectionImage: nil)
         // fontName.addSegmentWithTitle("Raleway", onSelectionImage: nil, offSelectionImage: nil)
-        fontName.addSegmentWithTitle("Times", onSelectionImage: nil, offSelectionImage: nil)
+        // fontName.addSegmentWithTitle("Times", onSelectionImage: nil, offSelectionImage: nil)
         fontName.addSegmentWithTitle("Iowan", onSelectionImage: nil, offSelectionImage: nil)
         fontName.addSegmentWithTitle("Roboto", onSelectionImage: nil, offSelectionImage: nil)
 //        fontName.segments[0].titleFont = UIFont(name: "Andada-Regular", size: 18)!
