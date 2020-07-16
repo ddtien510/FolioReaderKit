@@ -55,7 +55,6 @@ open class FolioReaderContainer: UIViewController {
         if self.epubPath != "" {
             self.initialization()
         }
-        print("init")
     }
 
     required public init?(coder aDecoder: NSCoder) {
@@ -82,9 +81,9 @@ open class FolioReaderContainer: UIViewController {
 
         // Register initial defaults
         self.folioReader.register(defaults: [
-            kCurrentFontFamily: FolioReaderFont.andada.rawValue,
+            kCurrentFontFamily: FolioReaderFont.roboto.rawValue,
             kNightMode: false,
-            kCurrentFontSize: 2,
+            kCurrentFontSize: 3,
             kCurrentAudioRate: 1,
             kCurrentHighlightStyle: 0,
             kCurrentTOCMenu: 0,
@@ -112,7 +111,6 @@ open class FolioReaderContainer: UIViewController {
     // MARK: - View life cicle
 
     override open func viewDidLoad() {
-        print("open ====>")
         super.viewDidLoad()
 
         let canChangeScrollDirection = self.readerConfig.canChangeScrollDirection

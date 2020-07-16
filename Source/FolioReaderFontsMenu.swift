@@ -179,7 +179,7 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
         fontName.addSegmentWithTitle("Lora", onSelectionImage: nil, offSelectionImage: nil)
         // fontName.addSegmentWithTitle("Raleway", onSelectionImage: nil, offSelectionImage: nil)
         // fontName.addSegmentWithTitle("Times", onSelectionImage: nil, offSelectionImage: nil)
-        fontName.addSegmentWithTitle("Iowan", onSelectionImage: nil, offSelectionImage: nil)
+        fontName.addSegmentWithTitle("Lato", onSelectionImage: nil, offSelectionImage: nil)
         fontName.addSegmentWithTitle("Roboto", onSelectionImage: nil, offSelectionImage: nil)
 //        fontName.segments[0].titleFont = UIFont(name: "Andada-Regular", size: 18)!
 //        fontName.segments[1].titleFont = UIFont(name: "Lato-Regular", size: 18)!
