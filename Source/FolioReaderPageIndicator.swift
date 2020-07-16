@@ -130,8 +130,6 @@ class FolioReaderPageIndicator: UIView {
         let chapter = self.folioReader.readerCenter?.getCurrentChapter()
         let href = chapter?.href ?? ""
         let index = self.folioReader.currentMenuIndex
-        // print("index", index)
-
 
         let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page+1) : totalPages-page
         // print("pagesRemaining", pagesRemaining)
