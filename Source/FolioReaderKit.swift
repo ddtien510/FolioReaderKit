@@ -122,7 +122,7 @@ open class FolioReader: NSObject {
     /// isPurchased
     open var linkPurchase: String? = ""
     open var statusTooltip: Bool? = false
-    open var chapInt: Int? = 0
+    open var chapInt: String? = ""
 
     /// Check if layout needs to change to fit Right To Left
     var needsRTLChange: Bool {
@@ -173,7 +173,7 @@ extension FolioReader {
         addObservers()
     }
 
-    open func setParams(linkPurchase: String? = nil, chapInt: Int? = nil, statusTooltip: Bool? = false) {
+    open func setParams(linkPurchase: String? = nil, chapInt: String? = nil, statusTooltip: Bool? = false) {
         self.linkPurchase = linkPurchase;
         self.chapInt = chapInt;
         self.statusTooltip = statusTooltip;

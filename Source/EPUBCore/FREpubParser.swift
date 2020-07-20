@@ -322,7 +322,7 @@ class FREpubParser: NSObject, SSZipArchiveDelegate {
             let hrefSplit = reference.split {$0 == "#"}.map { String($0) }
             let fragmentID = hrefSplit.count > 1 ? hrefSplit[1] : ""
             let href = hrefSplit[0]
-
+            // print("href", href)
             let resource = book.resources.findByHref(href)
             let toc = FRTocReference(title: label, resource: resource, fragmentID: fragmentID)
 

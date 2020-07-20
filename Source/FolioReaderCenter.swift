@@ -307,10 +307,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         self.collectionView.reloadData()
         self.configureNavBarButtons()
         self.setCollectionViewProgressiveDirection()
-
-        if (folioReader.chapInt > -1) {
-                self.changePageWith(page: folioReader.chapInt!)
-            self.currentPageNumber = folioReader.chapInt!
+        if (folioReader.chapInt!.count > 0) {
+                // self.changePageWith(page: folioReader.chapInt!)
+            self.currentPageNumber = 0
+            self.changePageWith(href: folioReader.chapInt!)
             return
         }
 
@@ -765,6 +765,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     open func changePageWith(href: String, andAudioMarkID markID: String) {
+
         if recentlyScrolled { return } // if user recently scrolled, do not change pages or scroll the webview
         guard let currentPage = currentPage else { return }
 
@@ -797,6 +798,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
     
     open func changePageWith(href: String, pageItem: Int, animated: Bool = false, completion: (() -> Void)? = nil) {
+       
         changePageWith(href: href, animated: animated) {
             self.changePageItem(to: pageItem)
         }

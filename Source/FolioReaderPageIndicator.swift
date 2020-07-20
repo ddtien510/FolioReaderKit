@@ -138,7 +138,7 @@ class FolioReaderPageIndicator: UIView {
         let index = self.folioReader.currentMenuIndex
         let currentPageIndex = self.folioReader.needsRTLChange ? (totalPages - page + 1) : page
         let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page+1) : totalPages-page
-        print("pagesRemaining", pagesRemaining, index, isLastChapter, pageIndex, currentPageIndex);
+        // print("pagesRemaining", pagesRemaining, index, isLastChapter, pageIndex, currentPageIndex);
         // Show purchase in first page at chapter 2, and last page.
         // known-bug: When rolling to last page of last chapter, pageRemaining will showed not correctly when scroll more. It will show as pagesRemaining = totalPages - 1, currentPageIndex = 1
         // last page and scroll more show popup.
