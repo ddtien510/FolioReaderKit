@@ -327,12 +327,12 @@ class FREpubParser: NSObject, SSZipArchiveDelegate {
             let toc = FRTocReference(title: label, resource: resource, fragmentID: fragmentID)
 
             // Recursively find child
-            if let navPoints = navpointElement["navPoint"].all {
-                for navPoint in navPoints {
-                    guard let item = readTOCReference(navPoint) else { continue }
-                    toc.children.append(item)
-                }
-            }
+            // if let navPoints = navpointElement["navPoint"].all {
+            //     for navPoint in navPoints {
+            //         guard let item = readTOCReference(navPoint) else { continue }
+            //         toc.children.append(item)
+            //     }
+            // }
             return toc
         } else {
             if let labelText = navpointElement["a"].value {
@@ -348,12 +348,12 @@ class FREpubParser: NSObject, SSZipArchiveDelegate {
             let toc = FRTocReference(title: label, resource: resource, fragmentID: fragmentID)
 
             // Recursively find child
-            if let navPoints = navpointElement["ol"]["li"].all {
-                for navPoint in navPoints {
-                    guard let item = readTOCReference(navPoint) else { continue }
-                    toc.children.append(item)
-                }
-            }
+            // if let navPoints = navpointElement["ol"]["li"].all {
+            //     for navPoint in navPoints {
+            //         guard let item = readTOCReference(navPoint) else { continue }
+            //         toc.children.append(item)
+            //     }
+            // }
             return toc
         }
     }
