@@ -94,10 +94,14 @@ class FolioReaderPageIndicator: UIView {
         pagesLabel.textColor = self.folioReader.isNight(UIColor(white: 1, alpha: 0.6), UIColor(white: 0, alpha: 0.9))
     }
 
-    func showRemindPurchase() {
+    func showRemindPurchase(isLastPage: Bool = false) {
         let link = self.folioReader.linkPurchase
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-        let alert = UIAlertController(title: "",message:"Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!",
+        var message = "Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!";
+        if (isLastPage) {
+            message = "Các chương đọc miễn phí đã hết. Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!";
+        }
+        let alert = UIAlertController(title: "",message: message,
                               preferredStyle: UIAlertController.Style.alert)
             // dispatch_async(dispatch_get_main_queue(), {
 
@@ -142,14 +146,22 @@ class FolioReaderPageIndicator: UIView {
         // Show purchase in first page at chapter 2, and last page.
         // known-bug: When rolling to last page of last chapter, pageRemaining will showed not correctly when scroll more. It will show as pagesRemaining = totalPages - 1, currentPageIndex = 1
         // last page and scroll more show popup.
-        if self.isLastPage && currentPageIndex != 1  && isLastChapter{
-            self.isLastPage = false;
-        }
-        if isLastChapter && pagesRemaining == 0 && !self.isLastPage {
-            self.isLastPage = true;
-        }
-        if self.isLastPage && currentPageIndex == 1 {
-            self.showRemindPurchase();
+        if self.readerConfig.scrollDirection == .horizontal {
+            // Left to right mode
+            if isLastChapter && pagesRemaining == 0 {
+                self.showRemindPurchase(isLastPage: true);
+            }
+        } else {
+            // scroll down mode
+            if self.isLastPage && currentPageIndex != 1  && isLastChapter{
+                self.isLastPage = false;
+            }
+            if isLastChapter && pagesRemaining == 0 && !self.isLastPage {
+                self.isLastPage = true;
+            }
+            if self.isLastPage && currentPageIndex == 1 {
+                self.showRemindPurchase(isLastPage: true);
+            }
         }
         
         if pageIndex == 2 && index == 0 && !self.isPopupShowedChapter2{
