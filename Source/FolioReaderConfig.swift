@@ -107,7 +107,7 @@ open class FolioReaderConfig: NSObject {
     open var menuSeparatorColor = UIColor(rgba: "#D7D7D7")
 
     /// Menu text color
-    open var menuTextColor = UIColor(rgba: "#767676")
+    open var menuTextColor = UIColor(rgba: "#000")
 
     /// Menu text color
     open var menuTextColorSelected = UIColor(rgba: "#e1bb00")

@@ -18,6 +18,10 @@ class FolioReaderPageIndicator: UIView {
     var currentPage: Int = 1 {
         didSet { self.reloadViewWithPage(self.currentPage) }
     }
+    // is last page of last chapter.
+    var isLastPage: Bool = false
+    // is showed popup of chapter 2
+    var isPopupShowedChapter2: Bool = false
 
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
@@ -93,7 +97,7 @@ class FolioReaderPageIndicator: UIView {
     func showRemindPurchase() {
         let link = self.folioReader.linkPurchase
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-        var alert = UIAlertController(title: "",message:"Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!",
+        let alert = UIAlertController(title: "",message:"Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!",
                               preferredStyle: UIAlertController.Style.alert)
             // dispatch_async(dispatch_get_main_queue(), {
 
@@ -127,12 +131,33 @@ class FolioReaderPageIndicator: UIView {
     }
 
     fileprivate func reloadViewWithPage(_ page: Int) {
-        let chapter = self.folioReader.readerCenter?.getCurrentChapter()
+        let chapter = self.folioReader.readerCenter?.getCurrentChapter();
+        let isLastChapter = self.folioReader.readerCenter?.isLastPage() ?? false;
+        let pageIndex = self.folioReader.readerCenter?.currentPageNumber ?? 0;
         let href = chapter?.href ?? ""
         let index = self.folioReader.currentMenuIndex
-
+        let currentPageIndex = self.folioReader.needsRTLChange ? (totalPages - page + 1) : page
         let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page+1) : totalPages-page
-        // print("pagesRemaining", pagesRemaining)
+        print("pagesRemaining", pagesRemaining, index, isLastChapter, pageIndex, currentPageIndex);
+        // Show purchase in first page at chapter 2, and last page.
+        // known-bug: When rolling to last page of last chapter, pageRemaining will showed not correctly when scroll more. It will show as pagesRemaining = totalPages - 1, currentPageIndex = 1
+        // last page and scroll more show popup.
+        if self.isLastPage && currentPageIndex != 1  && isLastChapter{
+            self.isLastPage = false;
+        }
+        if isLastChapter && pagesRemaining == 0 && !self.isLastPage {
+            self.isLastPage = true;
+        }
+        if self.isLastPage && currentPageIndex == 1 {
+            self.showRemindPurchase();
+        }
+        
+        if pageIndex == 2 && index == 0 && !self.isPopupShowedChapter2{
+            // show purchase popup in chapter 2
+            self.showRemindPurchase();
+            self.isPopupShowedChapter2 = true
+        }
+        
         if pagesRemaining == 1 {
             pagesLabel.text = " " + self.readerConfig.localizedReaderOnePageLeft
         } else {
@@ -146,12 +171,13 @@ class FolioReaderPageIndicator: UIView {
             minutesLabel.text = "\(minutesRemaining) " + self.readerConfig.localizedReaderManyMinutes+" ·"
         } else if minutesRemaining == 1 {
             minutesLabel.text = self.readerConfig.localizedReaderOneMinute+" ·"
-            let link = self.folioReader.linkPurchase
-            
-            if (!self.isShowPopup && link!.count > 0) {
-                self.showRemindPurchase()
-                self.isShowPopup = true
-            }
+            // @deprecated logic
+//            let link = self.folioReader.linkPurchase
+//
+//            if (!self.isShowPopup && link!.count > 0) {
+//                self.showRemindPurchase()
+//                self.isShowPopup = true
+//            }
         } else {
             minutesLabel.text = self.readerConfig.localizedReaderLessThanOneMinute+" ·"
         }
