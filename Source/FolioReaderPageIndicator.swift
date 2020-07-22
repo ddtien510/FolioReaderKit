@@ -164,12 +164,6 @@ class FolioReaderPageIndicator: UIView {
             }
         }
         
-        if pageIndex == 2 && index == 0 && !self.isPopupShowedChapter2{
-            // show purchase popup in chapter 2
-            self.showRemindPurchase();
-            self.isPopupShowedChapter2 = true
-        }
-        
         if pagesRemaining == 1 {
             pagesLabel.text = " " + self.readerConfig.localizedReaderOnePageLeft
         } else {
