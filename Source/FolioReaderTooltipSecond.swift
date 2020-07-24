@@ -36,9 +36,7 @@ class FolioReaderTooltipSecond: UIViewController, SMSegmentViewDelegate, UIGestu
         self.view.backgroundColor = UIColor(red: (0/255.0), green: (0/255.0), blue: (0/255.0), alpha: 0.2)
        
         var fixPositionVersion = 55
-        if #available(iOS 13.0, *) { // check for iOS 9.0 and later
-         fixPositionVersion = 65
-        }
+        
 
         // Tap gesture
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(FolioReaderTooltipSecond.tapGesture))
@@ -75,10 +73,18 @@ class FolioReaderTooltipSecond: UIViewController, SMSegmentViewDelegate, UIGestu
         let prev = UIImage(readerImageNamed: "prev-icon")
         let next = UIImage(readerImageNamed: "tooltip2")
 
-        var imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 150, y: 55, width: 220, height: 140)); // set as you want
-        if (view.frame.width > 380) {
-           imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 130, y: 65, width: 220, height: 140)); // set as you want
+        var imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 145, y: 30, width: 220, height: 140)); // set as you want
+        
+        if #available(iOS 13.0, *) { // check for iOS 9.0 and later
+           imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 143, y: 65, width: 220, height: 140)); // set as you want
+        } else if view.frame.height > 736 {
+           imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 146, y: 55, width: 220, height: 140)); // set as you want
         }
+
+        // if #available(iOS 13.0, *) { // check for iOS 9.0 and later
+        //     print("herere ===>")
+        //    imageView = UIImageView(frame: CGRect(x: (view.frame.width)/2 - 143, y: 65, width: 220, height: 140)); // set as you want
+        // }
 
         var image = UIImage(readerImageNamed: "tooltip2")
         imageView.image = image;
