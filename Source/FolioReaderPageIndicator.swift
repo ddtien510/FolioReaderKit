@@ -16,7 +16,9 @@ class FolioReaderPageIndicator: UIView {
     var totalPages: Int!
     var isShowPopup: Bool = false
     var currentPage: Int = 1 {
-        didSet { self.reloadViewWithPage(self.currentPage) }
+        didSet { 
+            self.reloadViewWithPage(self.currentPage)
+         }
     }
     // is last page of last chapter.
     var isLastPage: Bool = false
@@ -142,53 +144,58 @@ class FolioReaderPageIndicator: UIView {
         let index = self.folioReader.currentMenuIndex
         let currentPageIndex = self.folioReader.needsRTLChange ? (totalPages - page + 1) : page
         let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page+1) : totalPages-page
+        let checkTotalPages = totalPages > 1
         // print("pagesRemaining", pagesRemaining, index, isLastChapter, pageIndex, currentPageIndex);
         // Show purchase in first page at chapter 2, and last page.
         // known-bug: When rolling to last page of last chapter, pageRemaining will showed not correctly when scroll more. It will show as pagesRemaining = totalPages - 1, currentPageIndex = 1
         // last page and scroll more show popup.
-        if self.readerConfig.scrollDirection == .horizontal {
-            // Left to right mode
-            if isLastChapter && pagesRemaining == 0 {
-                self.showRemindPurchase(isLastPage: true);
+        if !self.isShowPopup {
+            if self.readerConfig.scrollDirection == .horizontal {
+                // Left to right mode
+                if isLastChapter && pagesRemaining == 0 && checkTotalPages {
+                    self.showRemindPurchase(isLastPage: true);
+                    self.isShowPopup = true
+                }
+            } else {
+                // scroll down mode
+                if self.isLastPage && currentPageIndex != 1  && isLastChapter{
+                    self.isLastPage = false;
+                }
+                if isLastChapter && pagesRemaining == 0 && !self.isLastPage && checkTotalPages {
+                    self.isLastPage = true;
+                }
+                if self.isLastPage && currentPageIndex == 1 {
+                    self.showRemindPurchase(isLastPage: true);
+                    self.isShowPopup = true
+                }
             }
-        } else {
-            // scroll down mode
-            if self.isLastPage && currentPageIndex != 1  && isLastChapter{
-                self.isLastPage = false;
-            }
-            if isLastChapter && pagesRemaining == 0 && !self.isLastPage {
-                self.isLastPage = true;
-            }
-            if self.isLastPage && currentPageIndex == 1 {
-                self.showRemindPurchase(isLastPage: true);
-            }
-        }
+         }   
         
-        if pagesRemaining == 1 {
-            pagesLabel.text = " " + self.readerConfig.localizedReaderOnePageLeft
-        } else {
-            pagesLabel.text = " \(pagesRemaining) " + self.readerConfig.localizedReaderManyPagesLeft
-        }
+        // if pagesRemaining == 1 {
+        //     pagesLabel.text = " " + self.readerConfig.localizedReaderOnePageLeft
+        // } else {
+        //     pagesLabel.text = " \(pagesRemaining) " + self.readerConfig.localizedReaderManyPagesLeft
+        // }
 
-        let minutesRemaining = Int(ceil(CGFloat((pagesRemaining * totalMinutes)/totalPages)))
-        // print("minutesRemaining", minutesRemaining)
+//         let minutesRemaining = Int(ceil(CGFloat((pagesRemaining * totalMinutes)/totalPages)))
+//         // print("minutesRemaining", minutesRemaining)
         
-        if minutesRemaining > 1 {
-            minutesLabel.text = "\(minutesRemaining) " + self.readerConfig.localizedReaderManyMinutes+" ·"
-        } else if minutesRemaining == 1 {
-            minutesLabel.text = self.readerConfig.localizedReaderOneMinute+" ·"
-            // @deprecated logic
-//            let link = self.folioReader.linkPurchase
-//
-//            if (!self.isShowPopup && link!.count > 0) {
-//                self.showRemindPurchase()
-//                self.isShowPopup = true
-//            }
-        } else {
-            minutesLabel.text = self.readerConfig.localizedReaderLessThanOneMinute+" ·"
-        }
+//         if minutesRemaining > 1 {
+//             minutesLabel.text = "\(minutesRemaining) " + self.readerConfig.localizedReaderManyMinutes+" ·"
+//         } else if minutesRemaining == 1 {
+//             minutesLabel.text = self.readerConfig.localizedReaderOneMinute+" ·"
+//             // @deprecated logic
+// //            let link = self.folioReader.linkPurchase
+// //
+// //            if (!self.isShowPopup && link!.count > 0) {
+// //                self.showRemindPurchase()
+// //                self.isShowPopup = true
+// //            }
+//         } else {
+//             minutesLabel.text = self.readerConfig.localizedReaderLessThanOneMinute+" ·"
+//         }
         
-        reloadView(updateShadow: false)
+        // reloadView(updateShadow: false)
     }
 }
 
