@@ -107,7 +107,7 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
         // Menu view
         var visibleHeight: CGFloat = self.readerConfig.canChangeScrollDirection ? 222 : 170
         visibleHeight = self.readerConfig.canChangeFontStyle ? visibleHeight : visibleHeight - 55
-        menuView = UIView(frame: CGRect(x: 0, y: view.frame.height-visibleHeight, width: view.frame.width, height: view.frame.height))
+        menuView = UIView(frame: CGRect(x: 0, y: view.frame.height-visibleHeight - 30, width: view.frame.width, height: view.frame.height))
         menuView.backgroundColor = self.folioReader.isNight(self.readerConfig.nightModeMenuBackground, UIColor.white)
         menuView.autoresizingMask = .flexibleWidth
         menuView.layer.shadowColor = UIColor.black.cgColor
@@ -135,27 +135,33 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
         let moonSelected = moon?.imageTintColor(selectedColor)?.withRenderingMode(.alwaysOriginal)
 
         // Day night mode
-        let dayNight = SMSegmentView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 55),
+        let dayNight = SMSegmentView(frame: CGRect(x: 20, y: 15, width: view.frame.width - 40, height: 45),
                                      separatorColour: self.readerConfig.nightModeSeparatorColor,
-                                     separatorWidth: 1,
+                                     separatorWidth: 1.5,
                                      segmentProperties:  [
                                         keySegmentTitleFont: UIFont(name: "Avenir-Light", size: 17)!,
                                         keySegmentOnSelectionColour: UIColor.clear,
-                                        keySegmentOffSelectionColour: UIColor.clear,
+                                        keySegmentOffSelectionColour: UIColor(white: 0.5, alpha: 0.05),
                                         keySegmentOnSelectionTextColour: selectedColor,
                                         keySegmentOffSelectionTextColour: normalColor,
-                                        keyContentVerticalMargin: 17 as AnyObject
+                                     // verticalMargin: 15,
+
+                                        keyContentVerticalMargin: 0 as AnyObject
             ])
         dayNight.delegate = self
         dayNight.tag = 1
         dayNight.addSegmentWithTitle(self.readerConfig.localizedFontMenuDay, onSelectionImage: sunSelected, offSelectionImage: sunNormal)
         dayNight.addSegmentWithTitle(self.readerConfig.localizedFontMenuNight, onSelectionImage: moonSelected, offSelectionImage: moonNormal)
         dayNight.selectSegmentAtIndex(self.folioReader.nightMode ? 1 : 0)
+        dayNight.layer.borderWidth = 1.0
+        dayNight.layer.cornerRadius = 10.0
+        dayNight.layer.borderColor = UIColor(white: 0.5, alpha: 0.15).cgColor
+        dayNight.layer.masksToBounds = true
         menuView.addSubview(dayNight)
 
 
         // Separator
-        let line = UIView(frame: CGRect(x: 0, y: dayNight.frame.height+dayNight.frame.origin.y, width: view.frame.width, height: 1))
+        let line = UIView(frame: CGRect(x: 0, y: dayNight.frame.height+dayNight.frame.origin.y + 15, width: view.frame.width, height: 1))
         line.backgroundColor = self.readerConfig.nightModeSeparatorColor
         menuView.addSubview(line)
 
@@ -164,7 +170,7 @@ class FolioReaderFontsMenu: UIViewController, SMSegmentViewDelegate, UIGestureRe
         let fontName = SMSegmentView(frame: CGRect(x: 15, y: line.frame.height+line.frame.origin.y, width: view.frame.width-30, height: fontNameHeight),
                                      separatorColour: UIColor.clear,
                                      separatorWidth: 0,
-                                     segmentProperties:  [
+                                      segmentProperties:  [
                                         keySegmentOnSelectionColour: UIColor.clear,
                                         keySegmentOffSelectionColour: UIColor.clear,
                                         keySegmentOnSelectionTextColour: selectedColor,
