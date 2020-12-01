@@ -121,6 +121,7 @@ open class FolioReader: NSObject {
     
     /// isPurchased
     open var linkPurchase: String? = ""
+    open var enableChap: String? = ""
     open var statusTooltip: Bool? = false
     open var chapInt: String? = ""
 
@@ -173,10 +174,11 @@ extension FolioReader {
         addObservers()
     }
 
-    open func setParams(linkPurchase: String? = nil, chapInt: String? = nil, statusTooltip: Bool? = false) {
+    open func setParams(linkPurchase: String? = nil, chapInt: String? = nil, statusTooltip: Bool? = false, enableChap: String? = nil) {
         self.linkPurchase = linkPurchase;
         self.chapInt = chapInt;
         self.statusTooltip = statusTooltip;
+        self.enableChap = enableChap;
     }
 }
 

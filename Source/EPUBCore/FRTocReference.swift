@@ -16,6 +16,7 @@ open class FRTocReference: NSObject {
     public var fragmentID: String?
     
     convenience init(title: String, resource: FRResource?, fragmentID: String = "") {
+        // print("title", title)
         self.init(title: title, resource: resource, fragmentID: fragmentID, children: [FRTocReference]())
     }
 

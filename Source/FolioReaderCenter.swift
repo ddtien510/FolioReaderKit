@@ -65,12 +65,15 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var activityIndicator = UIActivityIndicatorView()
     var isScrolling = false
     var isShowTooltip = false
+    var isScrollUp = true
     var pageScrollDirection = ScrollDirection()
     var nextPageNumber: Int = 0
     var previousPageNumber: Int = 0
     var currentPageNumber: Int = 0
+    var oldY: Int = 0
     var pageWidth: CGFloat = 0.0
     var pageHeight: CGFloat = 0.0
+    var isShowModal: Bool = false
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -1229,13 +1232,158 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         scrollScrubber?.scrollViewWillBeginDragging(scrollView)
     }
 
+    func showRemindPurchase(isLastPage: Bool = false) {
+        // if (self.isShowModal == true) {
+
+        let link = self.folioReader.linkPurchase
+        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        var message = "Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!";
+        if (isLastPage) {
+            message = "Các chương đọc miễn phí đã hết. Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!";
+        }
+        let alert = UIAlertController(title: "",message: message,
+                              preferredStyle: UIAlertController.Style.alert)
+            // dispatch_async(dispatch_get_main_queue(), {
+
+            //   self.window?.rootViewController?.present(alert, animated: true, completion: nil)
+            // })
+
+            let alertActionOk = UIAlertAction(title: "Mua ngay", style: .default) { (act) in
+            // if let url = URL(string: link!) {
+            //     if UIApplication.shared.canOpenURL(url) {
+            //         if #available(iOS 10.0, *) {
+            //             UIApplication.shared.open(url, options: [:])
+            //         } else {
+            //             UIApplication.shared.openURL(url)
+            //             // Fallback on earlier versions
+            //         }
+            //     }
+            // }
+            self.isShowModal = false
+            // window?.rootViewController?.dismiss(animated: false, completion: nil)
+            }
+
+            let alertActionCancel = UIAlertAction(title: "Để sau", style: .cancel) { (act) in
+        
+        }
+        
+        //Thêm các action vào alert
+        alert.addAction(alertActionOk)
+        alert.addAction(alertActionCancel)
+        if (self.isShowModal == true) {
+        print("openmodal")
+
+            DispatchQueue.main.async {
+                 window?.rootViewController?.presentedViewController?.present(alert, animated: true, completion: nil)
+            }
+        }
+        
+        // }
+
+    }
+
+    func showRemindReading() {
+        var dateComponents = DateComponents()
+        dateComponents.day = 1
+        guard let date = Calendar.current.date(byAdding: dateComponents, to: Date()) else {  // Adding date components to current day.
+           fatalError("date not found")
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateStyle = .short // dd.MM.yyyy
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+
+        let link = self.folioReader.linkPurchase
+        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        var message = "Mời bạn đọc phần tiếp theo vào ngày " + dateFormatter.string(from: date) ;
+        let alert = UIAlertController(title: "",message: message,
+                              preferredStyle: UIAlertController.Style.alert)
+            let alertActionOk = UIAlertAction(title: "Đồng ý", style: .default) { (act) in
+              self.isShowModal = false
+            }
+
+            let alertActionCancel = UIAlertAction(title: "Để sau", style: .cancel) { (act) in
+        
+        }
+        
+        //Thêm các action vào alert
+        alert.addAction(alertActionOk)
+        // alert.addAction(alertActionCancel)
+        if (self.isShowModal == true) {
+
+            DispatchQueue.main.async {
+                 window?.rootViewController?.presentedViewController?.present(alert, animated: true, completion: nil)
+            }
+        }
+        // }
+
+    }
+
+
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
+
+        let pages = pageIndicatorView?.totalPages
 
         if (navigationController?.isNavigationBarHidden == false) {
             self.toggleBars()
         }
-
         scrollScrubber?.scrollViewDidScroll(scrollView)
+
+
+        if (readerConfig.scrollDirection != .vertical) {
+            let width: CGFloat = scrollView.frame.size.width
+                let height: CGFloat = scrollView.frame.size.height
+            var currentPos = Int(scrollView.contentOffset.x)
+
+            if (oldY >= currentPos) {
+                isScrollUp = false
+            } else {
+                isScrollUp = true
+            }
+
+            self.oldY = currentPos
+
+            if (isScrollUp && ((pageIndicatorView?.isLastRead) != false)) {
+
+                if (self.isShowModal == false) {
+                     self.isShowModal = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
+                        self.showRemindReading()
+                    }
+                }
+                
+                // var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 100), width: width,   height: height)
+                scrollView.scrollRectToVisible((CGRect(x: CGFloat(Int(width)*(pages! - 1) - 1), y: 0, width: width,   height: height)), animated: false)
+                                       
+            }
+        } else {
+            var currentPos =  Int(scrollView.contentOffset.y)
+
+             // print(oldY, currentPos)
+
+            if (oldY >= currentPos) {
+                isScrollUp = false
+            } else {
+                isScrollUp = true
+            }
+
+            self.oldY = currentPos
+
+            if (isScrollUp && ((pageIndicatorView?.isLastRead) != false)) {
+
+                if (self.isShowModal == false) {
+                     self.isShowModal = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
+                        self.showRemindReading()
+                    }
+                }
+               
+                let width: CGFloat = scrollView.frame.size.width
+                let height: CGFloat = scrollView.frame.size.height
+                var toVisible: CGRect = CGRect(x: 0, y: CGFloat(self.oldY - 100), width: width,   height: height)
+                scrollView.scrollRectToVisible(toVisible, animated: true)
+                            
+            }
+        }
 
         let isCollectionScrollView = (scrollView is UICollectionView)
         let scrollType: ScrollType = ((isCollectionScrollView == true) ? .chapter : .page)
@@ -1256,6 +1404,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                     // if the cell reload doesn't save the top position offset
                     if let oldOffSet = self.currentWebViewScrollPositions[currentIndexPathRow], (abs(oldOffSet.y - scrollView.contentOffset.y) > 100) {
                         // Do nothing
+
                     } else {
                         self.currentWebViewScrollPositions[currentIndexPathRow] = scrollView.contentOffset
                     }

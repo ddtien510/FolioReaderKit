@@ -15,6 +15,7 @@ class FolioReaderPageIndicator: UIView {
     var totalMinutes: Int!
     var totalPages: Int!
     var isShowPopup: Bool = false
+    var isLastRead: Bool = false
     var currentPage: Int = 1 {
         didSet { 
             self.reloadViewWithPage(self.currentPage)
@@ -131,21 +132,70 @@ class FolioReaderPageIndicator: UIView {
         //Thêm các action vào alert
         alert.addAction(alertActionOk)
         alert.addAction(alertActionCancel)
+
+        if (link!.count > 0) {
+            DispatchQueue.main.async {
+                 window?.rootViewController?.presentedViewController?.present(alert, animated: true, completion: nil)
+            }
+        }
+    }
+
+    func showRemindReading() {
+        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+        var message = "Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!";
+
+        let alert = UIAlertController(title: "",message: message,
+                              preferredStyle: UIAlertController.Style.alert)
+            let alertActionOk = UIAlertAction(title: "Mua ngay", style: .default) { (act) in
+            }
+
+            let alertActionCancel = UIAlertAction(title: "Để sau", style: .cancel) { (act) in
+        
+        }
+        
+        alert.addAction(alertActionOk)
         DispatchQueue.main.async {
              window?.rootViewController?.presentedViewController?.present(alert, animated: true, completion: nil)
         }
     }
 
     fileprivate func reloadViewWithPage(_ page: Int) {
-        let chapter = self.folioReader.readerCenter?.getCurrentChapter();
+        
+        let regex = try! NSRegularExpression(pattern: "[^1-9]", options: NSRegularExpression.Options.caseInsensitive)
+
+        var enableChap = ""
+            if (self.folioReader.enableChap != nil) {
+                enableChap = self.folioReader.enableChap!
+            }
+            let rangeEnableChap = NSMakeRange(0, enableChap.count)
+            let pageBlockIndex = regex.stringByReplacingMatches(in: enableChap, options: [], range: rangeEnableChap, withTemplate: "")
+
+        let chapter = self.folioReader.readerCenter?.getCurrentChapter()
         let isLastChapter = self.folioReader.readerCenter?.isLastPage() ?? false;
         let pageIndex = self.folioReader.readerCenter?.currentPageNumber ?? 0;
         let href = chapter?.href ?? ""
+        let pageBlock = 2
         let index = self.folioReader.currentMenuIndex
         let currentPageIndex = self.folioReader.needsRTLChange ? (totalPages - page + 1) : page
-        let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page+1) : totalPages-page
+        let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page) : totalPages-page
         let checkTotalPages = totalPages > 1
-        // print("pagesRemaining", pagesRemaining, index, isLastChapter, pageIndex, currentPageIndex);
+        let minutesRemaining = Int(ceil(CGFloat((pagesRemaining * totalMinutes)/totalPages)))
+        
+        let range = NSMakeRange(0, href.count)
+        let modString = regex.stringByReplacingMatches(in: href, options: [], range: range, withTemplate: "")
+        if (href != nil) {
+            if (Int(modString) == Int(pageBlockIndex)) {
+            } else {
+
+            }
+            if (Int(modString) == Int(pageBlockIndex) && pagesRemaining < 1 ) {
+                self.isLastRead = true
+                    // self.showRemindPurchase(isLastPage: true);
+            } else {
+                self.isLastRead = false
+            }
+        }
+       
         // Show purchase in first page at chapter 2, and last page.
         // known-bug: When rolling to last page of last chapter, pageRemaining will showed not correctly when scroll more. It will show as pagesRemaining = totalPages - 1, currentPageIndex = 1
         // last page and scroll more show popup.
@@ -171,31 +221,29 @@ class FolioReaderPageIndicator: UIView {
             }
          }   
         
-        // if pagesRemaining == 1 {
-        //     pagesLabel.text = " " + self.readerConfig.localizedReaderOnePageLeft
-        // } else {
-        //     pagesLabel.text = " \(pagesRemaining) " + self.readerConfig.localizedReaderManyPagesLeft
-        // }
+        if pagesRemaining == 1 {
+            pagesLabel.text = " " + self.readerConfig.localizedReaderOnePageLeft
+        } else {
+            pagesLabel.text = " \(pagesRemaining) " + self.readerConfig.localizedReaderManyPagesLeft
+        }
 
-//         let minutesRemaining = Int(ceil(CGFloat((pagesRemaining * totalMinutes)/totalPages)))
-//         // print("minutesRemaining", minutesRemaining)
         
-//         if minutesRemaining > 1 {
-//             minutesLabel.text = "\(minutesRemaining) " + self.readerConfig.localizedReaderManyMinutes+" ·"
-//         } else if minutesRemaining == 1 {
-//             minutesLabel.text = self.readerConfig.localizedReaderOneMinute+" ·"
-//             // @deprecated logic
-// //            let link = self.folioReader.linkPurchase
-// //
-// //            if (!self.isShowPopup && link!.count > 0) {
-// //                self.showRemindPurchase()
-// //                self.isShowPopup = true
-// //            }
-//         } else {
-//             minutesLabel.text = self.readerConfig.localizedReaderLessThanOneMinute+" ·"
-//         }
+        if minutesRemaining > 1 {
+            minutesLabel.text = "\(minutesRemaining) " + self.readerConfig.localizedReaderManyMinutes+" ·"
+        } else if minutesRemaining == 1 {
+            minutesLabel.text = self.readerConfig.localizedReaderOneMinute+" ·"
+            // @deprecated logic
+           // let link = self.folioReader.linkPurchase
+
+           // if (!self.isShowPopup && link!.count > 0) {
+           //     self.showRemindPurchase()
+           //     self.isShowPopup = true
+           // }
+        } else {
+            minutesLabel.text = self.readerConfig.localizedReaderLessThanOneMinute+" ·"
+        }
         
-        // reloadView(updateShadow: false)
+        reloadView(updateShadow: false)
     }
 }
 
@@ -221,4 +269,5 @@ public extension UIAlertController {
         vc.present(self, animated: true, completion: nil)
     }
 }
+
 

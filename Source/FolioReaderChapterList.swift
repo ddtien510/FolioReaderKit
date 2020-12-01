@@ -25,6 +25,7 @@ class FolioReaderChapterList: UITableViewController {
 
     weak var delegate: FolioReaderChapterListDelegate?
     fileprivate var tocItems = [FRTocReference]()
+    fileprivate var titleEnable = ""
     fileprivate var book: FRBook
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
@@ -89,7 +90,20 @@ class FolioReaderChapterList: UITableViewController {
         let tocReference = tocItems[indexPath.row]
         let isSection = tocReference.children.count > 0
 
-        cell.indexLabel?.text = tocReference.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let href = tocReference.resource?.href
+        let regex = try! NSRegularExpression(pattern: "[^1-9]", options: NSRegularExpression.Options.caseInsensitive)
+        let title = tocReference.title.trimmingCharacters(in: .whitespacesAndNewlines)
+
+        if (href != nil) {
+            let range = NSMakeRange(0, href!.count)
+            let modString = regex.stringByReplacingMatches(in: href!, options: [], range: range, withTemplate: "")
+
+            if (href == self.folioReader.enableChap) {
+                titleEnable = title
+            }
+        }
+
+        cell.indexLabel?.text = title
 
         // Add audio duration for Media Ovelay
         if let resource = tocReference.resource {
@@ -178,15 +192,61 @@ class FolioReaderChapterList: UITableViewController {
     }
 
 
+    @objc func showReadingRemind() {
+        let link = self.folioReader.linkPurchase
+        // let messagePopup = "test"
+        let messagePopup = "Bạn vui lòng đọc từ chương " + self.titleEnable + " theo qui định sách bản quyền."
+        let alert = UIAlertController(title: "", message: messagePopup, preferredStyle: .alert)
+        
+        //Khởi tạo các action (các nút) cho alert
+        let alertActionCancel = UIAlertAction(title: "Đồng ý", style: .cancel) { (act) in
+        }
+        
+        //Thêm các action vào alert
+        alert.addAction(alertActionCancel)
+        
+        //Hiển thị alert
+        self.present(alert, animated: true, completion: nil)
+    }
+
+
     // MARK: - Table view delegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let tocReference = tocItems[(indexPath as NSIndexPath).row]
-        delegate?.chapterList(self, didSelectRowAtIndexPath: indexPath, withTocReference: tocReference)
-        
-        tableView.deselectRow(at: indexPath, animated: true)
-        dismiss { 
-            self.delegate?.chapterList(didDismissedChapterList: self)
+
+        // let href = tocReference.title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let href = tocReference.resource?.href
+        let regex = try! NSRegularExpression(pattern: "[^1-9]", options: NSRegularExpression.Options.caseInsensitive)
+
+        if (href != nil) {
+            var enableChap = ""
+            if (self.folioReader.enableChap != nil) {
+                enableChap = self.folioReader.enableChap!
+            }
+            let range = NSMakeRange(0, href!.count)
+            let rangeEnableChap = NSMakeRange(0, enableChap.count)
+            let modString = regex.stringByReplacingMatches(in: href!, options: [], range: range, withTemplate: "")
+            let pageBlockIndex = regex.stringByReplacingMatches(in: enableChap, options: [], range: rangeEnableChap, withTemplate: "")
+            // print("href", href)
+            // print("modString", self.folioReader.enableChap)
+            if (Int(modString) > Int(pageBlockIndex)) {
+                showReadingRemind()
+            } else {
+                delegate?.chapterList(self, didSelectRowAtIndexPath: indexPath, withTocReference: tocReference)
+                tableView.deselectRow(at: indexPath, animated: true)
+                dismiss { 
+                    self.delegate?.chapterList(didDismissedChapterList: self)
+                }
+            }
+        } else {
+            delegate?.chapterList(self, didSelectRowAtIndexPath: indexPath, withTocReference: tocReference)
+                tableView.deselectRow(at: indexPath, animated: true)
+                dismiss { 
+                    self.delegate?.chapterList(didDismissedChapterList: self)
+                }
         }
+
+        
     }
 }
