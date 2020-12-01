@@ -91,7 +91,7 @@ class FolioReaderChapterList: UITableViewController {
         let isSection = tocReference.children.count > 0
 
         let href = tocReference.resource?.href
-        let regex = try! NSRegularExpression(pattern: "[^1-9]", options: NSRegularExpression.Options.caseInsensitive)
+        let regex = try! NSRegularExpression(pattern: "[^0-9]", options: NSRegularExpression.Options.caseInsensitive)
         let title = tocReference.title.trimmingCharacters(in: .whitespacesAndNewlines)
 
         if (href != nil) {
@@ -217,7 +217,7 @@ class FolioReaderChapterList: UITableViewController {
 
         // let href = tocReference.title.trimmingCharacters(in: .whitespacesAndNewlines)
         let href = tocReference.resource?.href
-        let regex = try! NSRegularExpression(pattern: "[^1-9]", options: NSRegularExpression.Options.caseInsensitive)
+        let regex = try! NSRegularExpression(pattern: "[^0-9]", options: NSRegularExpression.Options.caseInsensitive)
 
         if (href != nil) {
             var enableChap = ""

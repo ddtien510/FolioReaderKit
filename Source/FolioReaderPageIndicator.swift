@@ -161,7 +161,7 @@ class FolioReaderPageIndicator: UIView {
 
     fileprivate func reloadViewWithPage(_ page: Int) {
         
-        let regex = try! NSRegularExpression(pattern: "[^1-9]", options: NSRegularExpression.Options.caseInsensitive)
+        let regex = try! NSRegularExpression(pattern: "[^0-9]", options: NSRegularExpression.Options.caseInsensitive)
 
         var enableChap = ""
             if (self.folioReader.enableChap != nil) {
