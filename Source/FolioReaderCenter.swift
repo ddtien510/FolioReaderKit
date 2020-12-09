@@ -1283,32 +1283,35 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func showRemindReading() {
-        var dateComponents = DateComponents()
-        dateComponents.day = 1
-        guard let date = Calendar.current.date(byAdding: dateComponents, to: Date()) else {  // Adding date components to current day.
-           fatalError("date not found")
-        }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateStyle = .short // dd.MM.yyyy
-        dateFormatter.dateFormat = "dd/MM/yyyy"
-
-        let link = self.folioReader.linkPurchase
-        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-        var message = "Mời bạn đọc phần tiếp theo vào ngày " + dateFormatter.string(from: date) ;
-        let alert = UIAlertController(title: "",message: message,
-                              preferredStyle: UIAlertController.Style.alert)
-            let alertActionOk = UIAlertAction(title: "Đồng ý", style: .default) { (act) in
-              self.isShowModal = false
-            }
-
-            let alertActionCancel = UIAlertAction(title: "Để sau", style: .cancel) { (act) in
-        
-        }
-        
-        //Thêm các action vào alert
-        alert.addAction(alertActionOk)
-        // alert.addAction(alertActionCancel)
         if (self.isShowModal == true) {
+            var dateComponents = DateComponents()
+            dateComponents.day = 1
+            guard let date = Calendar.current.date(byAdding: dateComponents, to: Date()) else {  // Adding date components to current day.
+               fatalError("date not found")
+            }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .short // dd.MM.yyyy
+            dateFormatter.dateFormat = "dd/MM/yyyy"
+
+            let link = self.folioReader.linkPurchase
+            let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+            var message = "Mời bạn đọc phần tiếp theo vào ngày " + dateFormatter.string(from: date) ;
+            let alert = UIAlertController(title: "",message: message,
+                                  preferredStyle: UIAlertController.Style.alert)
+                let alertActionOk = UIAlertAction(title: "Đồng ý", style: .default) { (act) in
+                    if (self.pageIndicatorView?.shouldBlock != false) {
+
+                    }
+                    self.isShowModal = false
+                }
+
+                let alertActionCancel = UIAlertAction(title: "Để sau", style: .cancel) { (act) in
+            
+            }
+            
+            //Thêm các action vào alert
+            alert.addAction(alertActionOk)
+            // alert.addAction(alertActionCancel)
 
             DispatchQueue.main.async {
                  window?.rootViewController?.presentedViewController?.present(alert, animated: true, completion: nil)
@@ -1327,11 +1330,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             self.toggleBars()
         }
         scrollScrubber?.scrollViewDidScroll(scrollView)
-
+        let width: CGFloat = scrollView.frame.size.width
+        let height: CGFloat = scrollView.frame.size.height
 
         if (readerConfig.scrollDirection != .vertical) {
-            let width: CGFloat = scrollView.frame.size.width
-                let height: CGFloat = scrollView.frame.size.height
+            
             var currentPos = Int(scrollView.contentOffset.x)
 
             if (oldY >= currentPos) {
@@ -1350,15 +1353,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                         self.showRemindReading()
                     }
                 }
-                
-                // var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 100), width: width,   height: height)
+
+                var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 100), width: width,   height: height)
                 scrollView.scrollRectToVisible((CGRect(x: CGFloat(Int(width)*(pages! - 1) - 1), y: 0, width: width,   height: height)), animated: false)
                                        
             }
         } else {
             var currentPos =  Int(scrollView.contentOffset.y)
 
-             // print(oldY, currentPos)
 
             if (oldY >= currentPos) {
                 isScrollUp = false
@@ -1377,10 +1379,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                     }
                 }
                
-                let width: CGFloat = scrollView.frame.size.width
-                let height: CGFloat = scrollView.frame.size.height
-                var toVisible: CGRect = CGRect(x: 0, y: CGFloat(self.oldY - 100), width: width,   height: height)
-                scrollView.scrollRectToVisible(toVisible, animated: true)
+                // var toVisible: CGRect = CGRect(x: 0, y: CGFloat(self.oldY - 1), width: width,   height: height)
+                var toVisible: CGRect = CGRect(x: 0, y: CGFloat(Int(height)*(pages! - 1) - 200), width: width,   height: height)
+                scrollView.scrollRectToVisible(toVisible, animated: false)
                             
             }
         }
@@ -1440,6 +1441,15 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
+        let width: CGFloat = scrollView.frame.size.width
+        let height: CGFloat = scrollView.frame.size.height
+
+        if (pageIndicatorView?.shouldBlock != false) {
+             scrollView.scrollRectToVisible((CGRect(x: 0, y: 0, width: width,   height: height)), animated: false)
+             DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
+                self.showRemindReading()
+             }
+        } 
         self.isScrolling = false
         
         if (scrollView is UICollectionView) {

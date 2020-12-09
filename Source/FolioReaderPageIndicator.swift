@@ -16,6 +16,7 @@ class FolioReaderPageIndicator: UIView {
     var totalPages: Int!
     var isShowPopup: Bool = false
     var isLastRead: Bool = false
+    var shouldBlock: Bool = false
     var currentPage: Int = 1 {
         didSet { 
             self.reloadViewWithPage(self.currentPage)
@@ -184,15 +185,16 @@ class FolioReaderPageIndicator: UIView {
         let range = NSMakeRange(0, href.count)
         let modString = regex.stringByReplacingMatches(in: href, options: [], range: range, withTemplate: "")
         if (href != nil) {
-            if (Int(modString) == Int(pageBlockIndex)) {
-            } else {
 
-            }
             if (Int(modString) == Int(pageBlockIndex) && pagesRemaining < 1 ) {
                 self.isLastRead = true
+                self.shouldBlock = false
                     // self.showRemindPurchase(isLastPage: true);
+            } else if (Int(modString) > Int(pageBlockIndex)) {
+                self.shouldBlock = true
             } else {
                 self.isLastRead = false
+                self.shouldBlock = false
             }
         }
        
