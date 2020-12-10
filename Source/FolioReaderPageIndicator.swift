@@ -160,6 +160,10 @@ class FolioReaderPageIndicator: UIView {
         }
     }
 
+    func getLastReadCheck() -> Bool {
+        return self.isLastRead
+    }
+
     fileprivate func reloadViewWithPage(_ page: Int) {
         
         let regex = try! NSRegularExpression(pattern: "[^0-9]", options: NSRegularExpression.Options.caseInsensitive)
@@ -178,22 +182,43 @@ class FolioReaderPageIndicator: UIView {
         let pageBlock = 2
         let index = self.folioReader.currentMenuIndex
         let currentPageIndex = self.folioReader.needsRTLChange ? (totalPages - page + 1) : page
+       
         let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page) : totalPages-page
         let checkTotalPages = totalPages > 1
         let minutesRemaining = Int(ceil(CGFloat((pagesRemaining * totalMinutes)/totalPages)))
+        print("pagesRemaining", pagesRemaining)
+        print("totalPages", totalPages)
         
         let range = NSMakeRange(0, href.count)
         let modString = regex.stringByReplacingMatches(in: href, options: [], range: range, withTemplate: "")
+      
         if (href != nil) {
 
-            if (Int(modString) == Int(pageBlockIndex) && pagesRemaining < 1 ) {
-                self.isLastRead = true
+            // if (totalPages < 5) {
+            //     if (Int(modString) == Int(pageBlockIndex)) {
+            //         if (pagesRemaining < 1) {
+            //             self.isLastRead = true
+            //             print("set")
+            //             self.showRemindReading()
+            //         } else {
+            //             self.isLastRead = false
+            //         }
+            //     }
+            // }
+
+            if (Int(modString) == Int(pageBlockIndex) ) {
+                if (pagesRemaining < 1) {
+                  self.isLastRead = true
+                } else {
+                  self.isLastRead = false
+                }
                 self.shouldBlock = false
-                    // self.showRemindPurchase(isLastPage: true);
-            } else if (Int(modString) > Int(pageBlockIndex)) {
+                self.showRemindPurchase(isLastPage: true);
+            }
+
+            if (Int(modString) > Int(pageBlockIndex)) {
                 self.shouldBlock = true
             } else {
-                self.isLastRead = false
                 self.shouldBlock = false
             }
         }

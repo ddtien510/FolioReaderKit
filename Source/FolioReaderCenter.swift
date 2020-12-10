@@ -71,6 +71,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var previousPageNumber: Int = 0
     var currentPageNumber: Int = 0
     var oldY: Int = 0
+    var blockPosition: Int = 0
     var pageWidth: CGFloat = 0.0
     var pageHeight: CGFloat = 0.0
     var isShowModal: Bool = false
@@ -1215,6 +1216,23 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: - ScrollView Delegate
 
     open func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
+        let width: CGFloat = scrollView.frame.size.width
+        let height: CGFloat = scrollView.frame.size.height
+
+        if (pageIndicatorView?.shouldBlock != false) {
+            let indexPath = IndexPath(row: 0, section: 0)
+            // DispatchQueue.main.asyncAfter(deadline: .now() + 1.2) { 
+             // scrollView.scrollRectToVisible((CGRect(x: 0, y: 0, width: width,   height: height)), animated: false)
+                  // scrollView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
+                  self.changePageWith(indexPath: indexPath, animated: false, completion: { () -> Void in
+                self.updateCurrentPage()
+            })
+            // }
+             DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
+                self.showRemindReading()
+             }
+        } 
+
         self.isScrolling = true
         clearRecentlyScrolled()
         recentlyScrolled = true
@@ -1332,11 +1350,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         scrollScrubber?.scrollViewDidScroll(scrollView)
         let width: CGFloat = scrollView.frame.size.width
         let height: CGFloat = scrollView.frame.size.height
+        let heightScroll =  scrollView.contentSize.height - scrollView.bounds.size.height
 
+
+        print("isLastPage", self.isLastPage())
+        print("isssss", pageIndicatorView?.getLastReadCheck())
+        print("heightScroll", heightScroll)
         if (readerConfig.scrollDirection != .vertical) {
-            
             var currentPos = Int(scrollView.contentOffset.x)
-
             if (oldY >= currentPos) {
                 isScrollUp = false
             } else {
@@ -1379,10 +1400,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                     }
                 }
                
-                // var toVisible: CGRect = CGRect(x: 0, y: CGFloat(self.oldY - 1), width: width,   height: height)
-                var toVisible: CGRect = CGRect(x: 0, y: CGFloat(Int(height)*(pages! - 1) - 200), width: width,   height: height)
+                // var toVisible: CGRect = CGRect(x: 0, y: CGFloat(1194-10), width: width,   height: height)
+                var toVisible: CGRect = CGRect(x: 0, y: CGFloat(heightScroll - 10), width: width,   height: height)
+
                 scrollView.scrollRectToVisible(toVisible, animated: false)
-                            
+                  // scrollView.setContentOffset(CGPoint(x: 0, y: a-30), animated: false)
             }
         }
 
@@ -1441,16 +1463,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     open func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        let width: CGFloat = scrollView.frame.size.width
-        let height: CGFloat = scrollView.frame.size.height
-
-        if (pageIndicatorView?.shouldBlock != false) {
-             scrollView.scrollRectToVisible((CGRect(x: 0, y: 0, width: width,   height: height)), animated: false)
-             DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
-                self.showRemindReading()
-             }
-        } 
-        self.isScrolling = false
+                self.isScrolling = false
         
         if (scrollView is UICollectionView) {
             scrollView.isUserInteractionEnabled = true
@@ -1485,6 +1498,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     @objc func clearRecentlyScrolled() {
+      
         if(recentlyScrolledTimer != nil) {
             recentlyScrolledTimer.invalidate()
             recentlyScrolledTimer = nil
