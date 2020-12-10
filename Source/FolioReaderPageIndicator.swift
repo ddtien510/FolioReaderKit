@@ -213,7 +213,6 @@ class FolioReaderPageIndicator: UIView {
                   self.isLastRead = false
                 }
                 self.shouldBlock = false
-                self.showRemindPurchase(isLastPage: true);
             }
 
             if (Int(modString) > Int(pageBlockIndex)) {
