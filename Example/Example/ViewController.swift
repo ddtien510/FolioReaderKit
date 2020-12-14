@@ -63,7 +63,7 @@ class ViewController: UIViewController {
         }
 
         let readerConfiguration = self.readerConfiguration(forEpub: epub)
-        folioReader.setParams(linkPurchase: "", chapInt: "", statusTooltip: false, enableChap: "Text/Section0003.xhtml")
+        folioReader.setParams(linkPurchase: "asdasdasd", chapInt: "", statusTooltip: false, enableChap: "Text/Section000999.xhtml")
         folioReader.presentReader(parentViewController: self, withEpubPath: bookPath, andConfig: readerConfiguration, shouldRemoveEpub: false, animated: true)
     }
 

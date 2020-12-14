@@ -104,6 +104,9 @@ class FolioReaderPageIndicator: UIView {
 
     func showRemindPurchase(isLastPage: Bool = false) {
         let link = self.folioReader.linkPurchase
+        if (link!.count < 1) {
+            return
+        }
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
         var message = "Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!";
         if (isLastPage) {

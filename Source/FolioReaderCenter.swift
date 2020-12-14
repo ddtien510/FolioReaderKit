@@ -1262,9 +1262,12 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func showRemindPurchase(isLastPage: Bool = false) {
-        // if (self.isShowModal == true) {
 
+        // if (self.isShowModal == true) {
         let link = self.folioReader.linkPurchase
+        if (link!.count < 1) {
+            return
+        }
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
         var message = "Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!";
         if (isLastPage) {
@@ -1420,14 +1423,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                     }
                 }
 
-                var toVisible: CGRect = CGRect(x: 0, y: CGFloat(self.oldY - 1), width: width,   height: height)
-             
-                if (Int(self.oldY) > Int(heightScroll)) {
-                    var toVisible1: CGRect = CGRect(x: 0, y: CGFloat(heightScroll - 10), width: width,   height: height)
-                       scrollView.scrollRectToVisible(toVisible, animated: false)
-                    } else {
-                       scrollView.scrollRectToVisible(toVisible, animated: false)
-                    }
+                var toVisible: CGRect = CGRect(x: 0, y: CGFloat(heightScroll - 10), width: width,   height: height)
+                scrollView.scrollRectToVisible(toVisible, animated: false)
+        
             }
 
             if (isScrollUp && self.shouldBlock != false) {
