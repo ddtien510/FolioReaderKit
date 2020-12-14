@@ -17,6 +17,7 @@ class FolioReaderPageIndicator: UIView {
     var isShowPopup: Bool = false
     var isLastRead: Bool = false
     var shouldBlock: Bool = false
+    var isLast: Bool = false
     var currentPage: Int = 1 {
         didSet { 
             self.reloadViewWithPage(self.currentPage)
@@ -26,6 +27,7 @@ class FolioReaderPageIndicator: UIView {
     var isLastPage: Bool = false
     // is showed popup of chapter 2
     var isPopupShowedChapter2: Bool = false
+    var firstCheckLastRead: Bool = true
 
     fileprivate var readerConfig: FolioReaderConfig
     fileprivate var folioReader: FolioReader
@@ -65,6 +67,8 @@ class FolioReaderPageIndicator: UIView {
     }
 
     func reloadView(updateShadow: Bool) {
+        // self.folioReader.readerCenter?.shouldBlock = false
+        print("reload")
         minutesLabel.sizeToFit()
         pagesLabel.sizeToFit()
 
@@ -143,7 +147,17 @@ class FolioReaderPageIndicator: UIView {
 
     func showRemindReading() {
         let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-        var message = "Bạn có muốn đọc đầy đủ toàn bộ cuốn sách? Xin vui lòng mua ngay tại đây!";
+        var dateComponents = DateComponents()
+            dateComponents.day = 1
+            guard let date = Calendar.current.date(byAdding: dateComponents, to: Date()) else {  // Adding date components to current day.
+               fatalError("date not found")
+            }
+            let dateFormatter = DateFormatter()
+            dateFormatter.dateStyle = .short // dd.MM.yyyy
+            dateFormatter.dateFormat = "dd/MM/yyyy"
+
+            var message = "Mời bạn đọc phần tiếp theo vào ngày " + dateFormatter.string(from: date) ;
+
 
         let alert = UIAlertController(title: "",message: message,
                               preferredStyle: UIAlertController.Style.alert)
@@ -172,14 +186,13 @@ class FolioReaderPageIndicator: UIView {
             if (self.folioReader.enableChap != nil) {
                 enableChap = self.folioReader.enableChap!
             }
-            let rangeEnableChap = NSMakeRange(0, enableChap.count)
-            let pageBlockIndex = regex.stringByReplacingMatches(in: enableChap, options: [], range: rangeEnableChap, withTemplate: "")
+        let rangeEnableChap = NSMakeRange(0, enableChap.count)
+        let pageBlockIndex = regex.stringByReplacingMatches(in: enableChap, options: [], range: rangeEnableChap, withTemplate: "")
 
         let chapter = self.folioReader.readerCenter?.getCurrentChapter()
         let isLastChapter = self.folioReader.readerCenter?.isLastPage() ?? false;
         let pageIndex = self.folioReader.readerCenter?.currentPageNumber ?? 0;
         let href = chapter?.href ?? ""
-        let pageBlock = 2
         let index = self.folioReader.currentMenuIndex
         let currentPageIndex = self.folioReader.needsRTLChange ? (totalPages - page + 1) : page
        
@@ -191,34 +204,31 @@ class FolioReaderPageIndicator: UIView {
         
         let range = NSMakeRange(0, href.count)
         let modString = regex.stringByReplacingMatches(in: href, options: [], range: range, withTemplate: "")
+        print("check chapter sectionn====", Int(modString), "pageBlockIndex", Int(pageBlockIndex))
       
         if (href != nil) {
-
-            // if (totalPages < 5) {
-            //     if (Int(modString) == Int(pageBlockIndex)) {
-            //         if (pagesRemaining < 1) {
-            //             self.isLastRead = true
-            //             print("set")
-            //             self.showRemindReading()
-            //         } else {
-            //             self.isLastRead = false
-            //         }
-            //     }
-            // }
-
             if (Int(modString) == Int(pageBlockIndex) ) {
                 if (pagesRemaining < 1) {
-                  self.isLastRead = true
+                   self.isLastRead = true
+                   self.folioReader.readerCenter?.isLast = true
+
                 } else {
                   self.isLastRead = false
+                  self.folioReader.readerCenter?.isLast = false
                 }
-                self.shouldBlock = false
+                self.folioReader.readerCenter?.shouldBlock = false
+                self.showRemindPurchase(isLastPage: true);
+            } else {
+                self.isLastRead = false
+                self.folioReader.readerCenter?.isLast = false
             }
 
             if (Int(modString) > Int(pageBlockIndex)) {
-                self.shouldBlock = true
+                self.folioReader.readerCenter?.shouldBlock = true
+                  self.isLastRead = false
+                  self.folioReader.readerCenter?.isLast = false
             } else {
-                self.shouldBlock = false
+                self.folioReader.readerCenter?.shouldBlock = false
             }
         }
        
