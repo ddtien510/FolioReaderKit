@@ -71,6 +71,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var previousPageNumber: Int = 0
     var currentPageNumber: Int = 0
     var oldY: Int = 0
+    var heightScroll: Int = 0
     var blockPosition: Int = 0
     var pageWidth: CGFloat = 0.0
     var pageHeight: CGFloat = 0.0
@@ -79,6 +80,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var shouldBlock: Bool = false
     var isLast: Bool = false
     var debug: Bool = false
+    var isScrollBlock: Bool = false
 
     fileprivate var screenBounds: CGRect!
     fileprivate var pointNow = CGPoint.zero
@@ -1338,7 +1340,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                                   preferredStyle: UIAlertController.Style.alert)
                 let alertActionOk = UIAlertAction(title: "Đồng ý", style: .default) { (act) in
                     if (self.shouldBlock != false) {
-                        self.reloadData(goBackEnableChap: true)
+                        // self.reloadData(goBackEnableChap: true)
+                        self.shouldBlock = false
                     }
                     self.isShowModal = false
                 }
@@ -1371,6 +1374,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let width: CGFloat = scrollView.frame.size.width
         let height: CGFloat = scrollView.frame.size.height
         let heightScroll =  scrollView.contentSize.height - scrollView.bounds.size.height
+    
+        if (self.heightScroll == 0 && pageIndicatorView?.isLastRead == true) {
+            self.heightScroll = Int(heightScroll)
+
+        }
 
         // print("shouldBlock", (self.shouldBlock))
         // print("isLast", (self.isLast))
@@ -1394,16 +1402,28 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                         self.showRemindReading()
                     }
                 }
+                if (self.shouldBlock != true) {
+                    var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 100), width: width,   height: height)
+                    scrollView.scrollRectToVisible((CGRect(x: CGFloat(Int(width)*(pages! - 1) - 1), y: 0, width: width,   height: height)), animated: false)
+                }  
 
-                var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 100), width: width,   height: height)
-                scrollView.scrollRectToVisible((CGRect(x: CGFloat(Int(width)*(pages! - 1) - 1), y: 0, width: width,   height: height)), animated: false)
-                                       
             }
         } else {
             var currentPos =  Int(scrollView.contentOffset.y)
-            if (oldY >= currentPos) {
-                isScrollUp = false
+            // print("postBlockion, ", currentPos)
+            // print("oldY, ", self.oldY)
+            // print("heightScroll, ", self.heightScroll)
+            if (currentPos < 2 ) {
+                self.shouldBlock = false
+                self.isScrollBlock = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { 
+                  self.isScrollBlock = false
+                }
+            }
 
+            if (oldY > currentPos) {
+                isScrollUp = false
+                self.shouldBlock = false
                 if (currentPos < 500) {
                 self.isLast = false
                 }
@@ -1411,36 +1431,44 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                 isScrollUp = true
             }
             var a = self.oldY
-
             self.oldY = currentPos
 
-            if (isScrollUp && ((pageIndicatorView?.isLastRead) != false || self.isLast == true)) {
-
+            if (isScrollUp && ((pageIndicatorView?.isLastRead) != false || self.isLast == true) && self.shouldBlock != true) {
                 if (self.isShowModal == false && self.shouldBlock != true) {
                      self.isShowModal = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
                         self.showRemindReading()
                     }
                 }
+                if (self.shouldBlock != true) {
+                    // print("currentPos", currentPos)
+                    // print("heightScroll", heightScroll)
 
-                var toVisible: CGRect = CGRect(x: 0, y: CGFloat(heightScroll - 10), width: width,   height: height)
-                scrollView.scrollRectToVisible(toVisible, animated: false)
-        
-            }
+                    var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 10), width: width,   height: height)
+                    var toVisible2: CGRect = CGRect(x: 0, y: CGFloat(self.heightScroll - 10), width: width,   height: height)
+                    if (self.heightScroll > 1200) {
+                        // print(">1299")
+                        scrollView.scrollRectToVisible(toVisible2, animated: false)
 
-            if (isScrollUp && self.shouldBlock != false) {
-                
-                if (self.isShowModal == false) {
-                    let indexPath = IndexPath(row: 0, section: 0)
-                        self.isShowModal = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
-                        self.showRemindReading()
-                          
+                    } else {
+                        // print("<1299")
+                        scrollView.scrollRectToVisible(toVisible2, animated: false)
                     }
                 }
             }
-        }
 
+            if (isScrollUp && self.shouldBlock && self.isScrollBlock == false) {
+                if (self.isShowModal == false) {
+                    self.isShowModal = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
+                        self.showRemindReading()
+                    }
+                }
+                var toVisibleBlock: CGRect = CGRect(x: 0, y: 200, width: width, height: height)
+                scrollView.scrollRectToVisible(toVisibleBlock, animated: false)
+            }
+
+        }
 
 
         let isCollectionScrollView = (scrollView is UICollectionView)
