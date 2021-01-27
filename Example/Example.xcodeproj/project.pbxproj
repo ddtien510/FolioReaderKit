@@ -38,10 +38,12 @@
 		751F8CF61ECD20110050A2CF /* Epub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751F8CF51ECD20110050A2CF /* Epub.swift */; };
 		751F8CF71ECD20110050A2CF /* Epub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751F8CF51ECD20110050A2CF /* Epub.swift */; };
 		751F8CF81ECD20110050A2CF /* Epub.swift in Sources */ = {isa = PBXBuildFile; fileRef = 751F8CF51ECD20110050A2CF /* Epub.swift */; };
+		B22A451425C152F70081D874 /* ket-thuc-ban-hang-don-quyet-dinh1608539752.epub in Resources */ = {isa = PBXBuildFile; fileRef = B22A451325C152F70081D874 /* ket-thuc-ban-hang-don-quyet-dinh1608539752.epub */; };
 		B24BE77C25B029FE00A1C741 /* trobiptrenphowall1608109025.epub in Resources */ = {isa = PBXBuildFile; fileRef = B24BE77B25B029FE00A1C741 /* trobiptrenphowall1608109025.epub */; };
 		B24D9D122580A7630084F147 /* doc-sach-nhu-mot-nghe-thuat1595471277.epub in Resources */ = {isa = PBXBuildFile; fileRef = B24D9D112580A7630084F147 /* doc-sach-nhu-mot-nghe-thuat1595471277.epub */; };
 		B24DA51F25C0FA7800215F76 /* chet-vi-chung-khoan-40-1-41-1609831944.epub in Resources */ = {isa = PBXBuildFile; fileRef = B24DA51E25C0FA7800215F76 /* chet-vi-chung-khoan-40-1-41-1609831944.epub */; };
 		B24DA52525C0FC8E00215F76 /* dau-mo-tien-bac1609311695.epub in Resources */ = {isa = PBXBuildFile; fileRef = B24DA52425C0FC8E00215F76 /* dau-mo-tien-bac1609311695.epub */; };
+		B28936BF25C13A030044DA2E /* phong-cach-dau-tu-warrent-buffet1608869842.epub in Resources */ = {isa = PBXBuildFile; fileRef = B28936BE25C13A030044DA2E /* phong-cach-dau-tu-warrent-buffet1608869842.epub */; };
 		B299C71A24B41F1300C87445 /* cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub in Resources */ = {isa = PBXBuildFile; fileRef = B299C71924B41F1300C87445 /* cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub */; };
 		B2B3819924BD8C67001EEB8E /* digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub in Resources */ = {isa = PBXBuildFile; fileRef = B2B3819824BD8C67001EEB8E /* digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub */; };
 		B2B3819B24BD9195001EEB8E /* 90-ngay-dau-tien-lam-sep1594605101.epub in Resources */ = {isa = PBXBuildFile; fileRef = B2B3819A24BD9195001EEB8E /* 90-ngay-dau-tien-lam-sep1594605101.epub */; };
@@ -101,10 +103,12 @@
 		751F8CF51ECD20110050A2CF /* Epub.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Epub.swift; sourceTree = "<group>"; };
 		843E2EEC2F784021400961A9 /* Pods_MultipleInstance_Example.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MultipleInstance_Example.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		8E1BE6465444C567F5D1B8E6 /* Pods-FolioReaderTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FolioReaderTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-FolioReaderTests/Pods-FolioReaderTests.release.xcconfig"; sourceTree = "<group>"; };
+		B22A451325C152F70081D874 /* ket-thuc-ban-hang-don-quyet-dinh1608539752.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "ket-thuc-ban-hang-don-quyet-dinh1608539752.epub"; sourceTree = "<group>"; };
 		B24BE77B25B029FE00A1C741 /* trobiptrenphowall1608109025.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = trobiptrenphowall1608109025.epub; sourceTree = "<group>"; };
 		B24D9D112580A7630084F147 /* doc-sach-nhu-mot-nghe-thuat1595471277.epub */ = {isa = PBXFileReference; lastKnownFileType = file; name = "doc-sach-nhu-mot-nghe-thuat1595471277.epub"; path = "../../../../../../../../Desktop/epub/doc-sach-nhu-mot-nghe-thuat1595471277.epub"; sourceTree = "<group>"; };
 		B24DA51E25C0FA7800215F76 /* chet-vi-chung-khoan-40-1-41-1609831944.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "chet-vi-chung-khoan-40-1-41-1609831944.epub"; sourceTree = "<group>"; };
 		B24DA52425C0FC8E00215F76 /* dau-mo-tien-bac1609311695.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "dau-mo-tien-bac1609311695.epub"; sourceTree = "<group>"; };
+		B28936BE25C13A030044DA2E /* phong-cach-dau-tu-warrent-buffet1608869842.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "phong-cach-dau-tu-warrent-buffet1608869842.epub"; sourceTree = "<group>"; };
 		B299C71924B41F1300C87445 /* cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub"; sourceTree = "<group>"; };
 		B2B3819824BD8C67001EEB8E /* digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub */ = {isa = PBXFileReference; lastKnownFileType = file; name = "digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub"; path = "../../../../../../../../Desktop/epub/digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub"; sourceTree = "<group>"; };
 		B2B3819A24BD9195001EEB8E /* 90-ngay-dau-tien-lam-sep1594605101.epub */ = {isa = PBXFileReference; lastKnownFileType = file; path = "90-ngay-dau-tien-lam-sep1594605101.epub"; sourceTree = "<group>"; };
@@ -259,7 +263,9 @@
 				B299C71924B41F1300C87445 /* cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub */,
 				3AAA8B9E1E9BB94B00A47E5A /* The Adventures Of Sherlock Holmes - Adventure I.epub */,
 				B2B3819824BD8C67001EEB8E /* digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub */,
+				B22A451325C152F70081D874 /* ket-thuc-ban-hang-don-quyet-dinh1608539752.epub */,
 				B2F55C8C24C573C200787CB4 /* sachvuicom-danh-bai-pho-wall-peter-lynch1594952373.epub */,
+				B28936BE25C13A030044DA2E /* phong-cach-dau-tu-warrent-buffet1608869842.epub */,
 				B2B3819A24BD9195001EEB8E /* 90-ngay-dau-tien-lam-sep1594605101.epub */,
 				3AAA8B9F1E9BB94B00A47E5A /* The Silver Chair.epub */,
 				B24DA52425C0FC8E00215F76 /* dau-mo-tien-bac1609311695.epub */,
@@ -458,11 +464,13 @@
 			files = (
 				1A42C2A21C0E3A8D000F2137 /* LaunchScreen.storyboard in Resources */,
 				B24D9D122580A7630084F147 /* doc-sach-nhu-mot-nghe-thuat1595471277.epub in Resources */,
+				B28936BF25C13A030044DA2E /* phong-cach-dau-tu-warrent-buffet1608869842.epub in Resources */,
 				B2F55C8D24C573C300787CB4 /* sachvuicom-danh-bai-pho-wall-peter-lynch1594952373.epub in Resources */,
 				3AAA8BA31E9BB94B00A47E5A /* The Adventures Of Sherlock Holmes - Adventure I.epub in Resources */,
 				B24DA52525C0FC8E00215F76 /* dau-mo-tien-bac1609311695.epub in Resources */,
 				B299C71A24B41F1300C87445 /* cach-tao-ra-nhung-san-pham-truong-ton1594087188.epub in Resources */,
 				B2C3ED0324B557F400AC147D /* thay-doi-1-cach-lanh-dao-09031593159744.epub in Resources */,
+				B22A451425C152F70081D874 /* ket-thuc-ban-hang-don-quyet-dinh1608539752.epub in Resources */,
 				B2B3819924BD8C67001EEB8E /* digital-gold-ru-nhau-len-mang-dao-vang1594372127.epub in Resources */,
 				B2B3819B24BD9195001EEB8E /* 90-ngay-dau-tien-lam-sep1594605101.epub in Resources */,
 				B24BE77C25B029FE00A1C741 /* trobiptrenphowall1608109025.epub in Resources */,

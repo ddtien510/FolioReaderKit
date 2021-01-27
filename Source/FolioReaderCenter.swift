@@ -1378,7 +1378,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let currentChapter = getCurrentChapter()
         let href = currentChapter?.href ?? ""
         
-        if (self.heightScroll == 0 && pageIndicatorView?.isLastChapEnable == true) {
+        if ((self.heightScroll == 0 || self.heightScroll < Int(scrollView.contentOffset.y)) && pageIndicatorView?.isLastChapEnable == true) {
             self.heightScroll = Int(heightScroll)
             print("set true height check", Int(heightScroll), "currentPos", scrollView.contentOffset.y, "pageIndicatorView?.isLastRead", pageIndicatorView?.isLastRead)
 
@@ -1452,14 +1452,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                 print("run check22")
 
                 var toVisible2: CGRect = CGRect(x: 0, y: CGFloat(self.heightScroll - 10), width: width,   height: height)
-                if (self.heightScroll > 1200) {
+                // if (self.heightScroll > 1200) {
                     // print(">1299")
-                    scrollView.scrollRectToVisible(toVisible2, animated: false)
+                    // scrollView.scrollRectToVisible(toVisible2, animated: false)
 
-                } else {
+                // } else {
                     // print("<1299")
                     scrollView.scrollRectToVisible(toVisible2, animated: false)
-                }
+                // }
             }
 
             if (isScrollUp && self.shouldBlock && self.isScrollBlock == false) {
