@@ -15,7 +15,8 @@ enum Epub: Int {
 
     var name: String {
         switch self {
-        case .bookOne:      return "trobiptrenphowall1608109025" // standard eBook
+        case .bookOne:      return "dau-mo-tien-bac1609311695" // standard eBook
+        // case .bookOne:      return "chet-vi-chung-khoan-40-1-41-1609831944" // standard eBook
         // case .bookOne:      return "90-ngay-dau-tien-lam-sep1594605101" // standard eBook
         case .bookTwo:      return "The Adventures Of Sherlock Holmes - Adventure I" // audio-eBook
         }

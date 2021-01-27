@@ -1374,14 +1374,16 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let width: CGFloat = scrollView.frame.size.width
         let height: CGFloat = scrollView.frame.size.height
         let heightScroll =  scrollView.contentSize.height - scrollView.bounds.size.height
-    
-        if (self.heightScroll == 0 && pageIndicatorView?.isLastRead == true) {
+        let isLastRead = pageIndicatorView?.getLastReadCheck()
+
+        if (self.heightScroll == 0 && pageIndicatorView?.isLastChapEnable == true) {
             self.heightScroll = Int(heightScroll)
+            // print("set true height check", Int(heightScroll), "currentPos", scrollView.contentOffset.y, "pageIndicatorView?.isLastRead", pageIndicatorView?.isLastRead)
 
         }
 
         // print("shouldBlock", (self.shouldBlock))
-        // print("isLast", (self.isLast))
+        // print("height check", Int(heightScroll), "currentPos", scrollView.contentOffset.y, "pageIndicatorView?.isLastRead", pageIndicatorView?.isLastRead, isLastRead)
         // print("pageIndicatorView?.isLastRead", pageIndicatorView?.isLastRead)
 
         if (readerConfig.scrollDirection != .vertical) {
@@ -1394,7 +1396,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
             self.oldY = currentPos
 
-            if (isScrollUp && ((pageIndicatorView?.isLastRead) != false)) {
+            if (isScrollUp && pageIndicatorView?.isLastRead != false) {
 
                 if (self.isShowModal == false) {
                      self.isShowModal = true
@@ -1433,7 +1435,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             var a = self.oldY
             self.oldY = currentPos
 
-            if (isScrollUp && ((pageIndicatorView?.isLastRead) != false || self.isLast == true) && self.shouldBlock != true) {
+            if (isScrollUp && (pageIndicatorView?.isLastRead != false || self.isLast == true) && self.shouldBlock != true) {
                 if (self.isShowModal == false && self.shouldBlock != true) {
                      self.isShowModal = true
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
@@ -1442,9 +1444,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                 }
                 if (self.shouldBlock != true) {
                     // print("currentPos", currentPos)
-                    // print("heightScroll", heightScroll)
+                    // print("heightScroll", self.heightScroll)
 
-                    var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 10), width: width,   height: height)
+                    // var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 10), width: width,   height: height)
                     var toVisible2: CGRect = CGRect(x: 0, y: CGFloat(self.heightScroll - 10), width: width,   height: height)
                     if (self.heightScroll > 1200) {
                         // print(">1299")

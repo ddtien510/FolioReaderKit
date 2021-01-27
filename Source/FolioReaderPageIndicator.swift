@@ -16,6 +16,7 @@ class FolioReaderPageIndicator: UIView {
     var totalPages: Int!
     var isShowPopup: Bool = false
     var isLastRead: Bool = false
+    var isLastChapEnable: Bool = false
     var shouldBlock: Bool = false
     var isLast: Bool = false
     var currentPage: Int = 1 {
@@ -211,6 +212,7 @@ class FolioReaderPageIndicator: UIView {
       
         if (href != nil) {
             if (Int(modString) == Int(pageBlockIndex) ) {
+                self.isLastChapEnable = true
                 if (pagesRemaining < 1) {
                    self.isLastRead = true
                    self.folioReader.readerCenter?.isLast = true
@@ -222,6 +224,7 @@ class FolioReaderPageIndicator: UIView {
                 self.folioReader.readerCenter?.shouldBlock = false
                 self.showRemindPurchase(isLastPage: true);
             } else {
+                self.isLastChapEnable = false
                 self.isLastRead = false
                 self.folioReader.readerCenter?.isLast = false
             }
