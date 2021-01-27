@@ -203,7 +203,7 @@ class FolioReaderPageIndicator: UIView {
         let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page) : totalPages-page
         let checkTotalPages = totalPages > 1
         let minutesRemaining = Int(ceil(CGFloat((pagesRemaining * totalMinutes)/totalPages)))
-        print("pagesRemaining", pagesRemaining)
+        print("pagesRemaining", pagesRemaining, href)
         print("totalPages", totalPages)
         
         let range = NSMakeRange(0, href.count)
@@ -213,7 +213,7 @@ class FolioReaderPageIndicator: UIView {
         if (href != nil) {
             if (Int(modString) == Int(pageBlockIndex) ) {
                 self.isLastChapEnable = true
-                if (pagesRemaining < 1) {
+                if (pagesRemaining < 2) {
                    self.isLastRead = true
                    self.folioReader.readerCenter?.isLast = true
 
