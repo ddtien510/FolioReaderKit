@@ -312,7 +312,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func reloadData(goBackEnableChap: Bool) {
-
         let regex = try! NSRegularExpression(pattern: "[^0-9]", options: NSRegularExpression.Options.caseInsensitive)
         var enableChap = ""
             if (self.folioReader.enableChap != nil) {
@@ -376,6 +375,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
     /// Get internal page offset before layout change
     private func updatePageOffsetRate() {
+
         guard let currentPage = self.currentPage, let webView = currentPage.webView else {
             return
         }
@@ -461,9 +461,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             readerContainer.setNeedsStatusBarAppearanceUpdate()
 
             // Show minutes indicator
-            if (shouldShowIndicator == true) {
-                self.pageIndicatorView?.minutesLabel.alpha = shouldHide ? 0 : 1
-            }
+            // if (shouldShowIndicator == true) {
+            //     self.pageIndicatorView?.minutesLabel.alpha = shouldHide ? 0 : 1
+            // }
         })
         self.navigationController?.setNavigationBarHidden(shouldHide, animated: true)
     }
@@ -691,11 +691,11 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         scrollScrubber?.setSliderVal()
 
-        if let readingTime = currentPage.webView?.js("getReadingTime()") {
-            pageIndicatorView?.totalMinutes = Int(readingTime)!
-        } else {
-            pageIndicatorView?.totalMinutes = 0
-        }
+        // if let readingTime = currentPage.webView?.js("getReadingTime()") {
+        //     pageIndicatorView?.totalMinutes = Int(readingTime)!
+        // } else {
+        //     pageIndicatorView?.totalMinutes = 0
+        // }
         pagesForCurrentPage(currentPage)
 
         delegate?.pageDidAppear?(currentPage)
@@ -1394,8 +1394,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         }
 
         // print("shouldBlock", (self.shouldBlock))
-        // print("height check", Int(heightScroll), "currentPos", scrollView.contentOffset.y, "pageIndicatorView?.isLastRead", pageIndicatorView?.isLastRead, isLastRead)
-        print("pageIndicatorView?.isLastRead2", pageIndicatorView?.isLastRead, self.shouldBlock, "readerConfig.scrollDirection", readerConfig.scrollDirection, "height", self.heightScroll, "currentChapter")
+        print("height check", Int(heightScroll), "currentPos", scrollView.contentOffset.y, "pageIndicatorView?.isLastRead", pageIndicatorView?.isLastRead)
+        // print("pageIndicatorView?.isLastRead2", pageIndicatorView?.isLastRead, self.shouldBlock, "readerConfig.scrollDirection", readerConfig.scrollDirection, "height", self.heightScroll, "currentChapter")
 
         if (readerConfig.scrollDirection == .horizontal) {
             var currentPos = Int(scrollView.contentOffset.x)

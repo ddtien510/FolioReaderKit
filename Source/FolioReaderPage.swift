@@ -76,8 +76,9 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
     public func setup(withReaderContainer readerContainer: FolioReaderContainer) {
         self.readerContainer = readerContainer
         guard let readerContainer = self.readerContainer else { return }
+        let isHorizontal = self.readerConfig.scrollDirection == .horizontal
 
-        if webView == nil {
+        if (webView == nil || !isHorizontal ) {
             webView = FolioReaderWebView(frame: webViewFrame(), readerContainer: readerContainer)
             webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             webView?.dataDetectorTypes = .link
@@ -95,6 +96,7 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         }
 
         // Remove all gestures before adding new one
+        // print("removeveeve")
         webView?.gestureRecognizers?.forEach({ gesture in
             webView?.removeGestureRecognizer(gesture)
         })

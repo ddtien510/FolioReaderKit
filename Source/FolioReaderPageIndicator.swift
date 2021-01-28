@@ -101,8 +101,8 @@ class FolioReaderPageIndicator: UIView {
         animation.timingFunction = CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
         layer.add(animation, forKey: "shadowColor")
 
-        minutesLabel.textColor = self.folioReader.isNight(UIColor(white: 1, alpha: 0.3), UIColor(white: 0, alpha: 0.6))
-        pagesLabel.textColor = self.folioReader.isNight(UIColor(white: 1, alpha: 0.6), UIColor(white: 0, alpha: 0.9))
+//        minutesLabel.textColor = self.folioReader.isNight(UIColor(white: 1, alpha: 0.3), UIColor(white: 0, alpha: 0.6))
+//        pagesLabel.textColor = self.folioReader.isNight(UIColor(white: 1, alpha: 0.6), UIColor(white: 0, alpha: 0.9))
     }
 
     func showRemindPurchase(isLastPage: Bool = false) {
@@ -187,7 +187,8 @@ class FolioReaderPageIndicator: UIView {
     fileprivate func reloadViewWithPage(_ page: Int) {
         
         let pageBlockIndex = self.folioReader.readerCenter?.pageBlockIndex
-        
+        let isHorizontal = self.readerConfig.scrollDirection == .horizontal
+
         let regex = try! NSRegularExpression(pattern: "[^0-9]", options: NSRegularExpression.Options.caseInsensitive)
         let chapter = self.folioReader.readerCenter?.getCurrentChapter()
         let isLastChapter = self.folioReader.readerCenter?.isLastPage() ?? false;
@@ -201,6 +202,10 @@ class FolioReaderPageIndicator: UIView {
         // let minutesRemaining = Int(ceil(CGFloat((pagesRemaining * totalMinutes)/totalPages)))
         // print("pagesRemaining", pagesRemaining, href)
         // print("totalPages", totalPages)
+        var pageRemainingCompare = 2
+        if (isHorizontal) {
+            pageRemainingCompare = 1
+        }
         
         let range = NSMakeRange(0, href.count)
         let modString = regex.stringByReplacingMatches(in: href, options: [], range: range, withTemplate: "")
@@ -209,7 +214,7 @@ class FolioReaderPageIndicator: UIView {
         if (href != nil) {
             if (Int(modString) == Int(pageBlockIndex!) ) {
                 self.isLastChapEnable = true
-                if (pagesRemaining < 2) {
+                if (pagesRemaining < pageRemainingCompare) {
                    self.isLastRead = true
                    self.folioReader.readerCenter?.isLast = true
 
@@ -238,7 +243,7 @@ class FolioReaderPageIndicator: UIView {
         // known-bug: When rolling to last page of last chapter, pageRemaining will showed not correctly when scroll more. It will show as pagesRemaining = totalPages - 1, currentPageIndex = 1
         // last page and scroll more show popup.
         if !self.isShowPopup {
-            if self.readerConfig.scrollDirection == .horizontal {
+            if isHorizontal {
                 // Left to right mode
                 if isLastChapter && pagesRemaining == 0 && checkTotalPages {
                     self.showRemindPurchase(isLastPage: true);
