@@ -55,6 +55,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     var pages: [String]!
     var totalPages: Int = 0
     var tempFragment: String?
+    var pageBlockIndex: String = "0"
     var animator: ZFModalTransitionAnimator!
     var pageIndicatorView: FolioReaderPageIndicator?
     var pageIndicatorHeight: CGFloat = 0
@@ -311,6 +312,15 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     }
 
     func reloadData(goBackEnableChap: Bool) {
+
+        let regex = try! NSRegularExpression(pattern: "[^0-9]", options: NSRegularExpression.Options.caseInsensitive)
+        var enableChap = ""
+            if (self.folioReader.enableChap != nil) {
+                enableChap = self.folioReader.enableChap!
+            }
+        let rangeEnableChap = NSMakeRange(0, enableChap.count)
+        self.pageBlockIndex = regex.stringByReplacingMatches(in: enableChap, options: [], range: rangeEnableChap, withTemplate: "")
+
         self.loadingView.stopAnimating()
         self.totalPages = book.spine.spineReferences.count
 
@@ -1374,9 +1384,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let width: CGFloat = scrollView.frame.size.width
         let height: CGFloat = scrollView.frame.size.height
         let heightScroll =  scrollView.contentSize.height - scrollView.bounds.size.height
-        let isLastRead = pageIndicatorView?.getLastReadCheck()
-        let currentChapter = getCurrentChapter()
-        let href = currentChapter?.href ?? ""
+        // let currentChapter = getCurrentChapter()
+        // let href = currentChapter?.href ?? ""
         
         if ((self.heightScroll == 0 || self.heightScroll < Int(scrollView.contentOffset.y)) && pageIndicatorView?.isLastChapEnable == true) {
             self.heightScroll = Int(heightScroll)
@@ -1386,7 +1395,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         // print("shouldBlock", (self.shouldBlock))
         // print("height check", Int(heightScroll), "currentPos", scrollView.contentOffset.y, "pageIndicatorView?.isLastRead", pageIndicatorView?.isLastRead, isLastRead)
-        print("pageIndicatorView?.isLastRead2", pageIndicatorView?.isLastRead, self.shouldBlock, "readerConfig.scrollDirection", readerConfig.scrollDirection, "height", self.heightScroll, "currentChapter", href)
+        print("pageIndicatorView?.isLastRead2", pageIndicatorView?.isLastRead, self.shouldBlock, "readerConfig.scrollDirection", readerConfig.scrollDirection, "height", self.heightScroll, "currentChapter")
 
         if (readerConfig.scrollDirection == .horizontal) {
             var currentPos = Int(scrollView.contentOffset.x)
@@ -1458,7 +1467,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
                 // } else {
                     // print("<1299")
-                    scrollView.scrollRectToVisible(toVisible2, animated: false)
+                scrollView.scrollRectToVisible(toVisible2, animated: false)
                 // }
             }
 
@@ -1473,7 +1482,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
                 var toVisibleBlock: CGRect = CGRect(x: 0, y: 200, width: width, height: height)
                 scrollView.scrollRectToVisible(toVisibleBlock, animated: false)
             }
-
         }
 
 

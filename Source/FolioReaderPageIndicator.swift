@@ -39,27 +39,29 @@ class FolioReaderPageIndicator: UIView {
 
         super.init(frame: frame)
 
-        let color = self.folioReader.isNight(self.readerConfig.nightModeBackground, UIColor.white)
-        backgroundColor = color
-        // layer.shadowColor = color.cgColor
-        // layer.shadowOffset = CGSize(width: 0, height: 0)
-        // layer.shadowOpacity = 1
-        // layer.shadowRadius = 4
-        // layer.shadowPath = UIBezierPath(rect: bounds).cgPath
-        // layer.rasterizationScale = UIScreen.main.scale
-        // layer.shouldRasterize = true
+        // let color = self.folioReader.isNight(self.readerConfig.nightModeBackground, UIColor.white)
+        // backgroundColor = color
+        // // layer.shadowColor = color.cgColor
+        // // layer.shadowOffset = CGSize(width: 0, height: 0)
+        // // layer.shadowOpacity = 1
+        // // layer.shadowRadius = 4
+        // // layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+        // // layer.rasterizationScale = UIScreen.main.scale
+        // // layer.shouldRasterize = true
 
-        pagesLabel = UILabel(frame: CGRect.zero)
-        pagesLabel.font = UIFont(name: "Avenir-Light", size: 0)!
-        pagesLabel.textAlignment = NSTextAlignment.right
-        addSubview(pagesLabel)
+        // pagesLabel = UILabel(frame: CGRect.zero)
+        // pagesLabel.font = UIFont(name: "Avenir-Light", size: 0)!
+        // pagesLabel.textAlignment = NSTextAlignment.right
+        // addSubview(pagesLabel)
 
-        minutesLabel = UILabel(frame: CGRect.zero)
-        minutesLabel.font = UIFont(name: "Avenir-Light", size: 0)!
-        minutesLabel.textAlignment = NSTextAlignment.right
-        //        minutesLabel.alpha = 0
-        addSubview(minutesLabel)
+        // minutesLabel = UILabel(frame: CGRect.zero)
+        // minutesLabel.font = UIFont(name: "Avenir-Light", size: 0)!
+        // minutesLabel.textAlignment = NSTextAlignment.right
+        // //        minutesLabel.alpha = 0
+        // addSubview(minutesLabel)
         // self.showRemindPurchase()
+
+        
 
     }
 
@@ -70,17 +72,17 @@ class FolioReaderPageIndicator: UIView {
     func reloadView(updateShadow: Bool) {
         // self.folioReader.readerCenter?.shouldBlock = false
         print("reload")
-        minutesLabel.sizeToFit()
-        pagesLabel.sizeToFit()
+//        minutesLabel.sizeToFit()
+//        pagesLabel.sizeToFit()
 
-        let fullW = pagesLabel.frame.width + minutesLabel.frame.width
-        minutesLabel.frame.origin = CGPoint(x: frame.width/2-fullW/2, y: 2)
-        pagesLabel.frame.origin = CGPoint(x: minutesLabel.frame.origin.x+minutesLabel.frame.width, y: 2)
-        
-        if updateShadow {
-            layer.shadowPath = UIBezierPath(rect: bounds).cgPath
-            self.reloadColors()
-        }
+//        let fullW = pagesLabel.frame.width + minutesLabel.frame.width
+//        minutesLabel.frame.origin = CGPoint(x: frame.width/2-fullW/2, y: 2)
+//        pagesLabel.frame.origin = CGPoint(x: minutesLabel.frame.origin.x+minutesLabel.frame.width, y: 2)
+//        
+//        if updateShadow {
+//            layer.shadowPath = UIBezierPath(rect: bounds).cgPath
+//            self.reloadColors()
+//        }
     }
 
     func reloadColors() {
@@ -149,34 +151,34 @@ class FolioReaderPageIndicator: UIView {
         }
     }
 
-    func showRemindReading() {
-        let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
-        var dateComponents = DateComponents()
-            dateComponents.day = 1
-            guard let date = Calendar.current.date(byAdding: dateComponents, to: Date()) else {  // Adding date components to current day.
-               fatalError("date not found")
-            }
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateStyle = .short // dd.MM.yyyy
-            dateFormatter.dateFormat = "dd/MM/yyyy"
+    // func showRemindReading() {
+    //     let window = UIApplication.shared.windows.filter {$0.isKeyWindow}.first
+    //     var dateComponents = DateComponents()
+    //         dateComponents.day = 1
+    //         guard let date = Calendar.current.date(byAdding: dateComponents, to: Date()) else {  // Adding date components to current day.
+    //            fatalError("date not found")
+    //         }
+    //         let dateFormatter = DateFormatter()
+    //         dateFormatter.dateStyle = .short // dd.MM.yyyy
+    //         dateFormatter.dateFormat = "dd/MM/yyyy"
 
-            var message = "Mời bạn đọc phần tiếp theo vào ngày " + dateFormatter.string(from: date) ;
+    //         var message = "Mời bạn đọc phần tiếp theo vào ngày " + dateFormatter.string(from: date) ;
 
 
-        let alert = UIAlertController(title: "",message: message,
-                              preferredStyle: UIAlertController.Style.alert)
-            let alertActionOk = UIAlertAction(title: "Mua ngay", style: .default) { (act) in
-            }
+    //     let alert = UIAlertController(title: "",message: message,
+    //                           preferredStyle: UIAlertController.Style.alert)
+    //         let alertActionOk = UIAlertAction(title: "Mua ngay", style: .default) { (act) in
+    //         }
 
-            let alertActionCancel = UIAlertAction(title: "Để sau", style: .cancel) { (act) in
+    //         let alertActionCancel = UIAlertAction(title: "Để sau", style: .cancel) { (act) in
         
-        }
+    //     }
         
-        alert.addAction(alertActionOk)
-        DispatchQueue.main.async {
-             window?.rootViewController?.presentedViewController?.present(alert, animated: true, completion: nil)
-        }
-    }
+    //     alert.addAction(alertActionOk)
+    //     DispatchQueue.main.async {
+    //          window?.rootViewController?.presentedViewController?.present(alert, animated: true, completion: nil)
+    //     }
+    // }
 
     func getLastReadCheck() -> Bool {
         return self.isLastRead
@@ -184,34 +186,28 @@ class FolioReaderPageIndicator: UIView {
 
     fileprivate func reloadViewWithPage(_ page: Int) {
         
+        let pageBlockIndex = self.folioReader.readerCenter?.pageBlockIndex
+        
         let regex = try! NSRegularExpression(pattern: "[^0-9]", options: NSRegularExpression.Options.caseInsensitive)
-
-        var enableChap = ""
-            if (self.folioReader.enableChap != nil) {
-                enableChap = self.folioReader.enableChap!
-            }
-        let rangeEnableChap = NSMakeRange(0, enableChap.count)
-        let pageBlockIndex = regex.stringByReplacingMatches(in: enableChap, options: [], range: rangeEnableChap, withTemplate: "")
-
         let chapter = self.folioReader.readerCenter?.getCurrentChapter()
         let isLastChapter = self.folioReader.readerCenter?.isLastPage() ?? false;
-        let pageIndex = self.folioReader.readerCenter?.currentPageNumber ?? 0;
+        // let pageIndex = self.folioReader.readerCenter?.currentPageNumber ?? 0;
         let href = chapter?.href ?? ""
         let index = self.folioReader.currentMenuIndex
         let currentPageIndex = self.folioReader.needsRTLChange ? (totalPages - page + 1) : page
        
         let pagesRemaining = self.folioReader.needsRTLChange ? totalPages-(totalPages-page) : totalPages-page
         let checkTotalPages = totalPages > 1
-        let minutesRemaining = Int(ceil(CGFloat((pagesRemaining * totalMinutes)/totalPages)))
-        print("pagesRemaining", pagesRemaining, href)
-        print("totalPages", totalPages)
+        // let minutesRemaining = Int(ceil(CGFloat((pagesRemaining * totalMinutes)/totalPages)))
+        // print("pagesRemaining", pagesRemaining, href)
+        // print("totalPages", totalPages)
         
         let range = NSMakeRange(0, href.count)
         let modString = regex.stringByReplacingMatches(in: href, options: [], range: range, withTemplate: "")
-        print("check chapter sectionn====", Int(modString), "pageBlockIndex", Int(pageBlockIndex))
+        // print("check chapter sectionn====", Int(modString), "pageBlockIndex", Int(pageBlockIndex))
       
         if (href != nil) {
-            if (Int(modString) == Int(pageBlockIndex) ) {
+            if (Int(modString) == Int(pageBlockIndex!) ) {
                 self.isLastChapEnable = true
                 if (pagesRemaining < 2) {
                    self.isLastRead = true
@@ -229,7 +225,7 @@ class FolioReaderPageIndicator: UIView {
                 self.folioReader.readerCenter?.isLast = false
             }
 
-            if (Int(modString) > Int(pageBlockIndex)) {
+            if (Int(modString) > Int(pageBlockIndex!)) {
                 self.folioReader.readerCenter?.shouldBlock = true
                   self.isLastRead = false
                   self.folioReader.readerCenter?.isLast = false
@@ -263,29 +259,29 @@ class FolioReaderPageIndicator: UIView {
             }
          }   
         
-        if pagesRemaining == 1 {
-            pagesLabel.text = " " + self.readerConfig.localizedReaderOnePageLeft
-        } else {
-            pagesLabel.text = " \(pagesRemaining) " + self.readerConfig.localizedReaderManyPagesLeft
-        }
+        // if pagesRemaining == 1 {
+        //     pagesLabel.text = " " + self.readerConfig.localizedReaderOnePageLeft
+        // } else {
+        //     pagesLabel.text = " \(pagesRemaining) " + self.readerConfig.localizedReaderManyPagesLeft
+        // }
 
         
-        if minutesRemaining > 1 {
-            minutesLabel.text = "\(minutesRemaining) " + self.readerConfig.localizedReaderManyMinutes+" ·"
-        } else if minutesRemaining == 1 {
-            minutesLabel.text = self.readerConfig.localizedReaderOneMinute+" ·"
-            // @deprecated logic
-           // let link = self.folioReader.linkPurchase
+        // if minutesRemaining > 1 {
+        //     minutesLabel.text = "\(minutesRemaining) " + self.readerConfig.localizedReaderManyMinutes+" ·"
+        // } else if minutesRemaining == 1 {
+        //     minutesLabel.text = self.readerConfig.localizedReaderOneMinute+" ·"
+        //     // @deprecated logic
+        //    // let link = self.folioReader.linkPurchase
 
-           // if (!self.isShowPopup && link!.count > 0) {
-           //     self.showRemindPurchase()
-           //     self.isShowPopup = true
-           // }
-        } else {
-            minutesLabel.text = self.readerConfig.localizedReaderLessThanOneMinute+" ·"
-        }
+        //    // if (!self.isShowPopup && link!.count > 0) {
+        //    //     self.showRemindPurchase()
+        //    //     self.isShowPopup = true
+        //    // }
+        // } else {
+        //     minutesLabel.text = self.readerConfig.localizedReaderLessThanOneMinute+" ·"
+        // }
         
-        reloadView(updateShadow: false)
+        // reloadView(updateShadow: false)
     }
 }
 
