@@ -142,7 +142,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-
         screenBounds = self.getScreenBounds()
         
         setPageSize(UIApplication.shared.statusBarOrientation)
@@ -189,7 +188,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.register(FolioReaderPage.self, forCellWithReuseIdentifier: kReuseCellIdentifier)
 
         // Configure navigation bar and layout
-        automaticallyAdjustsScrollViewInsets = false
+        automaticallyAdjustsScrollViewInsets = true
         extendedLayoutIncludesOpaqueBars = true
         configureNavBar()
 
@@ -208,7 +207,10 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if let scrollScrubber = scrollScrubber {
             view.addSubview(scrollScrubber.slider)
         }
-        
+        delay(0.2) {
+            self.showBars()
+        }
+
     }
 
     override open func viewWillAppear(_ animated: Bool) {
@@ -272,13 +274,14 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         let tintColor = readerConfig.tintColor
         let navText = folioReader.isNight(UIColor.white, UIColor.black)
         let font = UIFont(name: "Avenir-Light", size: 17)!
+
         setTranslucentNavigation(color: navBackground, tintColor: tintColor, titleColor: navText, andFont: font)
     }
 
     func configureNavBarButtons() {
 
         // Navbar buttons
-        let shareIcon = UIImage(readerImageNamed: "icon-navbar-share")?.ignoreSystemTint(withConfiguration: self.readerConfig)
+        let shareIcon = UIImage(readerImageNamed: "share")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let audioIcon = UIImage(readerImageNamed: "icon-navbar-tts")?.ignoreSystemTint(withConfiguration: self.readerConfig) //man-speech-icon
         let closeIcon = UIImage(readerImageNamed: "back-icon")?.ignoreSystemTint(withConfiguration: self.readerConfig)
         let tocIcon = UIImage(readerImageNamed: "icon-navbar-toc")?.ignoreSystemTint(withConfiguration: self.readerConfig)
@@ -293,7 +296,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         var rightBarIcons = [UIBarButtonItem]()
 
         if (self.readerConfig.allowSharing == true) {
-            rightBarIcons.append(UIBarButtonItem(image: shareIcon, style: .plain, target: self, action:#selector(shareChapter(_:))))
+            rightBarIcons.append(UIBarButtonItem(image: shareIcon, style: .plain, target: self, action:#selector(shareLinkBook(_:))))
         }
 
         if self.book.hasAudio || self.readerConfig.enableTTS {
@@ -428,7 +431,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     // MARK: Status bar and Navigation bar
 
     func hideBars() {
-        
+        return
         guard self.readerConfig.shouldHideNavigationOnTap == true else {
             return
         }
@@ -445,7 +448,8 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
             return
         }
 
-        let shouldHide = !self.navigationController!.isNavigationBarHidden
+        // let shouldHide = !self.navigationController!.isNavigationBarHidden
+        let shouldHide = false
         if shouldHide == false {
             self.configureNavBar()
         }
@@ -1116,6 +1120,66 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     /**
      Sharing chapter method.
      */
+
+     @objc func shareLinkBook(_ sender: UIBarButtonItem) {
+        guard let currentPage = currentPage else { return }
+
+        if let chapterText = currentPage.webView?.js("getBodyText()") {
+            let htmlText = chapterText.replacingOccurrences(of: "[\\n\\r]+", with: "<br />", options: .regularExpression)
+            var subject = readerConfig.localizedShareChapterSubject
+            var html = ""
+            var text = ""
+            var bookTitle = ""
+            var chapterName = ""
+            var authorName = ""
+            var shareItems = [AnyObject]()
+
+            // Get book title
+            if let title = self.book.title {
+                bookTitle = title
+                subject += " “\(title)”"
+            }
+
+            // Get chapter name
+            if let chapter = getCurrentChapterName() {
+                chapterName = chapter
+            }
+
+            // Get author name
+            if let author = self.book.metadata.creators.first {
+                authorName = author.name
+            }
+
+            // Sharing html and text
+            html = "<html><body>"
+            html += "<br /><hr> <p>\(htmlText)</p> <hr><br />"
+            html += "<center><p style=\"color:gray\">"+readerConfig.localizedShareAllExcerptsFrom+"</p>"
+            html += "<b>\(bookTitle)</b><br />"
+            html += readerConfig.localizedShareBy+" <i>\(authorName)</i><br />"
+
+            if let bookShareLink = readerConfig.localizedShareWebLink {
+                html += "<a href=\"\(bookShareLink.absoluteString)\">\(bookShareLink.absoluteString)</a>"
+                shareItems.append(bookShareLink as AnyObject)
+            }
+
+            html += "</center></body></html>"
+            text = self.folioReader.linkShare!
+
+            let act = FolioReaderSharingProvider(subject: subject, text: text, html: html)
+            shareItems.insert(contentsOf: [act, "" as AnyObject], at: 0)
+
+            let activityViewController = UIActivityViewController(activityItems: shareItems, applicationActivities: nil)
+            activityViewController.excludedActivityTypes = [UIActivity.ActivityType.print, UIActivity.ActivityType.postToVimeo]
+
+            // Pop style on iPad
+            if let actv = activityViewController.popoverPresentationController {
+                actv.barButtonItem = sender
+            }
+
+            present(activityViewController, animated: true, completion: nil)
+        }
+    }
+
     @objc func shareChapter(_ sender: UIBarButtonItem) {
         guard let currentPage = currentPage else { return }
 
@@ -1377,9 +1441,9 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
 
         let pages = pageIndicatorView?.totalPages
 
-        if (navigationController?.isNavigationBarHidden == false) {
-            self.toggleBars()
-        }
+        // if (navigationController?.isNavigationBarHidden == false) {
+        //     self.toggleBars()
+        // }
         scrollScrubber?.scrollViewDidScroll(scrollView)
         let width: CGFloat = scrollView.frame.size.width
         let height: CGFloat = scrollView.frame.size.height

@@ -145,13 +145,13 @@ open class FolioReaderConfig: NSObject {
     open var canChangeFontStyle = true
     
     /// Should hide navigation bar on user tap
-    open var shouldHideNavigationOnTap = true
+    open var shouldHideNavigationOnTap = false
 
     /// Allow sharing option, if `false` will hide all sharing icons and options
     open var allowSharing = true
 
     /// Enable TTS (Text To Speech)
-    open var enableTTS = true
+    open var enableTTS = false
     
     /// Display book title in navbar
     open var displayTitle = false

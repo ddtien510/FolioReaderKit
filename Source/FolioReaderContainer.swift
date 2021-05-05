@@ -112,7 +112,6 @@ open class FolioReaderContainer: UIViewController {
 
     override open func viewDidLoad() {
         super.viewDidLoad()
-
         let canChangeScrollDirection = self.readerConfig.canChangeScrollDirection
         self.readerConfig.canChangeScrollDirection = self.readerConfig.isDirection(canChangeScrollDirection, canChangeScrollDirection, false)
 
@@ -130,6 +129,7 @@ open class FolioReaderContainer: UIViewController {
         self.readerConfig.shouldHideNavigationOnTap = ((hideBars == true) ? true : self.readerConfig.shouldHideNavigationOnTap)
 
         self.centerViewController = FolioReaderCenter(withContainer: self)
+        self.centerViewController?.edgesForExtendedLayout = []
 
         if let rootViewController = self.centerViewController {
             self.centerNavigationController = UINavigationController(rootViewController: rootViewController)
