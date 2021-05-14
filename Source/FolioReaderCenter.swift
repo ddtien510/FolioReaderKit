@@ -223,7 +223,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         if (folioReader.statusTooltip! && !self.isShowTooltip) { 
             self.isShowTooltip = true
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) { 
-              self.presentTooltipFirst()
+              self.presentTooltipSecond()
             }
         }
     }
