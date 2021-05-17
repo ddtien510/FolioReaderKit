@@ -78,7 +78,8 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         guard let readerContainer = self.readerContainer else { return }
         let isHorizontal = self.readerConfig.scrollDirection == .horizontal
 
-        if (webView == nil || !isHorizontal ) {
+        // if (webView == nil || !isHorizontal ) {
+        if (webView == nil) {
             webView = FolioReaderWebView(frame: webViewFrame(), readerContainer: readerContainer)
             webView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
             webView?.dataDetectorTypes = .link

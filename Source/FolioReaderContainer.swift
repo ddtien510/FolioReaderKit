@@ -143,9 +143,9 @@ open class FolioReaderContainer: UIViewController {
         self.centerNavigationController?.didMove(toParent: self)
 
         if (self.readerConfig.hideBars == true) {
-            self.readerConfig.shouldHideNavigationOnTap = false
-            self.navigationController?.navigationBar.isHidden = true
-            self.centerViewController?.pageIndicatorHeight = 0
+            // self.readerConfig.shouldHideNavigationOnTap = false
+            // self.navigationController?.navigationBar.isHidden = true
+            // self.centerViewController?.pageIndicatorHeight = 0
         }
 
         // Read async book
