@@ -188,7 +188,7 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         collectionView?.register(FolioReaderPage.self, forCellWithReuseIdentifier: kReuseCellIdentifier)
 
         // Configure navigation bar and layout
-        automaticallyAdjustsScrollViewInsets = true
+        automaticallyAdjustsScrollViewInsets = false
         extendedLayoutIncludesOpaqueBars = true
         configureNavBar()
 
