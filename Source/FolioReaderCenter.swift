@@ -1440,7 +1440,6 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
     open func scrollViewDidScroll(_ scrollView: UIScrollView) {
 
         let pages = pageIndicatorView?.totalPages
-
         // if (navigationController?.isNavigationBarHidden == false) {
         //     self.toggleBars()
         // }
@@ -1451,100 +1450,96 @@ open class FolioReaderCenter: UIViewController, UICollectionViewDelegate, UIColl
         // let currentChapter = getCurrentChapter()
         // let href = currentChapter?.href ?? ""
         
-        if ((self.heightScroll == 0 || self.heightScroll < Int(scrollView.contentOffset.y)) && pageIndicatorView?.isLastChapEnable == true) {
-            self.heightScroll = Int(heightScroll)
-            print("set true height check", Int(heightScroll), "currentPos", scrollView.contentOffset.y, "pageIndicatorView?.isLastRead", pageIndicatorView?.isLastRead)
-
-        }
-
-        // print("shouldBlock", (self.shouldBlock))
-        print("height check", Int(heightScroll), "currentPos", scrollView.contentOffset.y, "pageIndicatorView?.isLastRead", pageIndicatorView?.isLastRead)
-        // print("pageIndicatorView?.isLastRead2", pageIndicatorView?.isLastRead, self.shouldBlock, "readerConfig.scrollDirection", readerConfig.scrollDirection, "height", self.heightScroll, "currentChapter")
-
-        if (readerConfig.scrollDirection == .horizontal) {
-            var currentPos = Int(scrollView.contentOffset.x)
-            if (oldY >= currentPos) {
-                isScrollUp = false
-            } else {
-                isScrollUp = true
+        if (pageBlockIndex != "99999999") {
+            if ((self.heightScroll == 0 || self.heightScroll < Int(scrollView.contentOffset.y)) && pageIndicatorView?.isLastChapEnable == true) {
+                self.heightScroll = Int(heightScroll)
             }
 
-            self.oldY = currentPos
+            if (readerConfig.scrollDirection == .horizontal) {
+                var currentPos = Int(scrollView.contentOffset.x)
+                if (oldY >= currentPos) {
+                    isScrollUp = false
+                } else {
+                    isScrollUp = true
+                }
 
-            if (isScrollUp && pageIndicatorView?.isLastRead != false) {
+                self.oldY = currentPos
 
-                if (self.isShowModal == false) {
-                     self.isShowModal = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
-                        self.showRemindReading()
+                if (isScrollUp && pageIndicatorView?.isLastRead != false) {
+
+                    if (self.isShowModal == false) {
+                         self.isShowModal = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
+                            self.showRemindReading()
+                        }
                     }
-                }
-                if (self.shouldBlock != true) {
-                    var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 100), width: width,   height: height)
-                    scrollView.scrollRectToVisible((CGRect(x: CGFloat(Int(width)*(pages! - 1) - 1), y: 0, width: width,   height: height)), animated: false)
-                }  
+                    if (self.shouldBlock != true) {
+                        var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 100), width: width,   height: height)
+                        scrollView.scrollRectToVisible((CGRect(x: CGFloat(Int(width)*(pages! - 1) - 1), y: 0, width: width,   height: height)), animated: false)
+                    }  
 
-            }
-        } else {
-            var currentPos =  Int(scrollView.contentOffset.y)
-            // print("postBlockion, ", currentPos)
-            // print("oldY, ", self.oldY)
-            // print("heightScroll, ", self.heightScroll)
-            if (currentPos < 2 ) {
-                self.shouldBlock = false
-                self.isScrollBlock = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) { 
-                  self.isScrollBlock = false
-                }
-            }
-
-            if (oldY > currentPos) {
-                isScrollUp = false
-                self.shouldBlock = false
-                if (currentPos < 500) {
-                self.isLast = false
                 }
             } else {
-                isScrollUp = true
-            }
-            var a = self.oldY
-            self.oldY = currentPos
-                print("showmodal===", pageIndicatorView?.isLastRead, self.shouldBlock, "isScrollUp", isScrollUp)
-
-            if (isScrollUp && (pageIndicatorView?.isLastRead != false || self.isLast == true) && self.shouldBlock != true) {
-                if (self.isShowModal == false) {
-                     self.isShowModal = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
-                        self.showRemindReading()
+                var currentPos =  Int(scrollView.contentOffset.y)
+                // print("postBlockion, ", currentPos)
+                // print("oldY, ", self.oldY)
+                // print("heightScroll, ", self.heightScroll)
+                if (currentPos < 2 ) {
+                    self.shouldBlock = false
+                    self.isScrollBlock = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) { 
+                      self.isScrollBlock = false
                     }
                 }
-                // print("currentPos", currentPos)
-                // print("heightScroll", self.heightScroll)
 
-                // var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 10), width: width,   height: height)
-                print("run check22")
-
-                var toVisible2: CGRect = CGRect(x: 0, y: CGFloat(self.heightScroll - 10), width: width,   height: height)
-                // if (self.heightScroll > 1200) {
-                    // print(">1299")
-                    // scrollView.scrollRectToVisible(toVisible2, animated: false)
-
-                // } else {
-                    // print("<1299")
-                scrollView.scrollRectToVisible(toVisible2, animated: false)
-                // }
-            }
-
-            if (isScrollUp && self.shouldBlock && self.isScrollBlock == false) {
-                if (self.isShowModal == false) {
-                    self.isShowModal = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
-                        self.showRemindReading()
+                if (oldY > currentPos) {
+                    isScrollUp = false
+                    self.shouldBlock = false
+                    if (currentPos < 500) {
+                    self.isLast = false
                     }
+                } else {
+                    isScrollUp = true
                 }
-                print("block check22")
-                var toVisibleBlock: CGRect = CGRect(x: 0, y: 200, width: width, height: height)
-                scrollView.scrollRectToVisible(toVisibleBlock, animated: false)
+                var a = self.oldY
+                self.oldY = currentPos
+                    print("showmodal===", pageIndicatorView?.isLastRead, self.shouldBlock, "isScrollUp", isScrollUp)
+
+                if (isScrollUp && (pageIndicatorView?.isLastRead != false || self.isLast == true) && self.shouldBlock != true) {
+                    if (self.isShowModal == false) {
+                         self.isShowModal = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
+                            self.showRemindReading()
+                        }
+                    }
+                    // print("currentPos", currentPos)
+                    // print("heightScroll", self.heightScroll)
+
+                    // var toVisible: CGRect = CGRect(x: 0, y: CGFloat(currentPos - 10), width: width,   height: height)
+                    print("run check22")
+
+                    var toVisible2: CGRect = CGRect(x: 0, y: CGFloat(self.heightScroll - 10), width: width,   height: height)
+                    // if (self.heightScroll > 1200) {
+                        // print(">1299")
+                        // scrollView.scrollRectToVisible(toVisible2, animated: false)
+
+                    // } else {
+                        // print("<1299")
+                    scrollView.scrollRectToVisible(toVisible2, animated: false)
+                    // }
+                }
+
+                if (isScrollUp && self.shouldBlock && self.isScrollBlock == false) {
+                    if (self.isShowModal == false) {
+                        self.isShowModal = true
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { 
+                            self.showRemindReading()
+                        }
+                    }
+                    print("block check22")
+                    var toVisibleBlock: CGRect = CGRect(x: 0, y: 200, width: width, height: height)
+                    scrollView.scrollRectToVisible(toVisibleBlock, animated: false)
+                }
             }
         }
 

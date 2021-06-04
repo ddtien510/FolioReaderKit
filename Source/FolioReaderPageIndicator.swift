@@ -211,7 +211,7 @@ class FolioReaderPageIndicator: UIView {
         let modString = regex.stringByReplacingMatches(in: href, options: [], range: range, withTemplate: "")
         // print("check chapter sectionn====", Int(modString), "pageBlockIndex", Int(pageBlockIndex))
       
-        if (href != nil) {
+        if (href != nil && modString != nil && pageBlockIndex != nil) {
             if (Int(modString) == Int(pageBlockIndex!) ) {
                 self.isLastChapEnable = true
                 if (pagesRemaining < pageRemainingCompare) {
