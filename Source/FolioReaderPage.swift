@@ -132,8 +132,11 @@ open class FolioReaderPage: UICollectionViewCell, UIWebViewDelegate, UIGestureRe
         let statusbarHeight = UIApplication.shared.statusBarFrame.size.height
         let navBarHeight = self.folioReader.readerCenter?.navigationController?.navigationBar.frame.size.height ?? CGFloat(0)
         let navTotal = self.readerConfig.shouldHideNavigationOnTap ? 0 : statusbarHeight + navBarHeight
-        let paddingTop: CGFloat = 38
+        var paddingTop: CGFloat = 50
         let paddingBottom: CGFloat = 30
+        if (statusbarHeight < 30) {
+            paddingTop = 68
+        }
         self.folioReader.readerCenter?.navigationController?.navigationBar.setBackgroundImage(UIImage(), for: UIBarMetrics.default)
         self.folioReader.readerCenter?.navigationController?.navigationBar.shadowImage = UIImage()
         return CGRect(
