@@ -164,6 +164,7 @@ open class FolioReaderWebView: UIWebView {
         } catch {
             print("Could not receive JSON")
         }
+        self.clearTextSelection()
     }
     
     @objc func highlightWithNote(_ sender: UIMenuController?) {

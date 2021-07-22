@@ -245,7 +245,10 @@ extension Highlight {
 
         let mapped = matches?.map { (match) -> Highlight in
             var contentPre = str.substring(with: NSRange(location: match.range.location-kHighlightRange, length: kHighlightRange))
-            var contentPost = str.substring(with: NSRange(location: match.range.location + match.range.length, length: kHighlightRange))
+            var contentPost = " "
+            if (str.length >=  match.range.location + match.range.length + 30) {
+               contentPost = str.substring(with: NSRange(location: match.range.location + match.range.length, length: kHighlightRange))
+            }
 
             // Normalize string before save
             contentPre = Highlight.subString(ofContent: contentPre, fromRangeOfString: ">", withPattern: "((?=[^>]*$)(.|\\s)*$)")
